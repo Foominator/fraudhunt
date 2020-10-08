@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+@php $currentRouteName = request()->route()->getName(); @endphp
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
     <meta charset="utf-8">
@@ -12,8 +13,9 @@
 </head>
 <body>
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <a class="pl-5 navbar-brand" href="/"><img src="{{asset('images/FraudHunt_Logo_160x55_5.png')}}" width="25" alt=""></a>
-    <a class="navbar-brand" href="#">FRAUDHUNT</a>
+    <a class="pl-5 navbar-brand" href="{{route('main')}}"><img src="{{asset('images/FraudHunt_Logo_160x55_5.png')}}"
+                                                               width="25" alt=""></a>
+    <a class="navbar-brand" href="{{route('main')}}">FRAUDHUNT</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
             aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -21,27 +23,27 @@
 
     <div class="navbar-collapse collapse w-100 order-3 dual-collapse2 pr-5">
         <ul class="navbar-nav ml-auto">
-            <li class="nav-item pl-4">
+            <li class="nav-item pl-4 @if('contacts' === $currentRouteName) active @endif">
                 <a class="nav-link" href="#">Контакты</a> <!-- contacts -->
             </li>
-            <li class="nav-item pl-4">
+            <li class="nav-item pl-4 @if('rules' === $currentRouteName) active @endif">
                 <a class="nav-link" href="#">Правила</a> <!-- rules -->
             </li>
-            <li class="nav-item pl-4">
+            <li class="nav-item pl-4 @if('frauds' === $currentRouteName) active @endif">
                 <a class="nav-link" href="#">Мошенники</a> <!-- frauds -->
             </li>
-            <li class="nav-item pl-4">
-                <a class="nav-link" href="#">Добавить мошенника</a> <!-- add fraud -->
+            <li class="nav-item pl-4 @if('add_frauds' === $currentRouteName) active @endif">
+                <a class="nav-link" href="#">Добавить мошенника</a> <!-- add_fraud -->
             </li>
-            <li class="nav-item pl-4">
-                <a class="nav-link" href="#">Полезные советы</a> <!-- advices -->
+            <li class="nav-item pl-4 @if('advices' === $currentRouteName) active @endif">
+                <a class="nav-link" href="{{route('advices')}}">Полезные советы</a> <!-- advices -->
             </li>
 
             @auth
                 <li class="nav-item pl-4">
                     <a href="{{ url('/logout') }}" class="nav-link"
                        onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                        Выйти <i class="fa fa-sign-out"></i>
+                        Выйти <i class="fa fa-door-open"></i>
                     </a>
                 </li>
 
@@ -54,7 +56,7 @@
                 </li>
                 <li class="nav-item pl-4">
                     <a class="nav-link" href="{{ route('login') }}">
-                        Вход <i class="fa fa-plus"></i>
+                        Вход <i class="fa fa-door-closed"></i>
                     </a> <!-- login -->
                 </li>
             @endif
