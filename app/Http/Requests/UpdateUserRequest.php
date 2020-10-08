@@ -26,8 +26,8 @@ class UpdateUserRequest extends FormRequest
     public function rules()
     {
         $rules = User::$rules;
-        $rules['email']='unique:users,email,'.request()->route('user');
-        $rules['password']='nullable|string|max:255';
+        $rules['email'] = 'unique:users,email,' . request()->route('user');
+        $rules['password'] = 'nullable|string|max:255';
         return $rules;
     }
 }
