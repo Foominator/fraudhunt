@@ -18,7 +18,10 @@ Auth::routes();
 Route::get('/', [App\Http\Controllers\HomeController::class, 'main'])->name('main');
 Route::get('/advices', [App\Http\Controllers\HomeController::class, 'advices'])->name('advices');
 Route::get('/rules', [App\Http\Controllers\HomeController::class, 'rules'])->name('rules');
+Route::get('/fraud/create', [App\Http\Controllers\FraudController::class, 'create'])->name('fraud.create');
 
 Route::group(['middleware' => 'admin'], function () {
     Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+    Route::resource('users', App\Http\Controllers\UserController::class);
+    Route::resource('phones', App\Http\Controllers\PhoneController::class);
 });
