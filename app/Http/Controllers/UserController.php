@@ -8,6 +8,7 @@ use App\Repositories\UserRepository;
 use App\Http\Controllers\AppBaseController;
 use Illuminate\Http\Request;
 use Flash;
+use Illuminate\Support\Facades\Hash;
 use Response;
 
 class UserController extends AppBaseController
@@ -30,6 +31,7 @@ class UserController extends AppBaseController
     public function index(Request $request)
     {
         $users = $this->userRepository->paginate(15);
+        $users->load('roles');
 
         return view('users.index')
             ->with('users', $users);
@@ -121,7 +123,12 @@ class UserController extends AppBaseController
             return redirect(route('users.index'));
         }
 
-        $user = $this->userRepository->update($request->all(), $id);
+        $data = $request->except(['password']);
+        if ($request->filled('password')) {
+            $data['password'] = Hash::make($request->password);
+        }
+
+        $user = $this->userRepository->update($data, $id);
 
         Flash::success('User updated successfully.');
 
@@ -133,9 +140,9 @@ class UserController extends AppBaseController
      *
      * @param int $id
      *
+     * @return Response
      * @throws \Exception
      *
-     * @return Response
      */
     public function destroy($id)
     {
