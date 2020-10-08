@@ -27,7 +27,7 @@
                 <a class="nav-link" href="#">Контакты</a> <!-- contacts -->
             </li>
             <li class="nav-item pl-4 @if('rules' === $currentRouteName) active @endif">
-                <a class="nav-link" href="#">Правила</a> <!-- rules -->
+                <a class="nav-link" href="{{route('rules')}}">Правила</a> <!-- rules -->
             </li>
             <li class="nav-item pl-4 @if('frauds' === $currentRouteName) active @endif">
                 <a class="nav-link" href="#">Мошенники</a> <!-- frauds -->

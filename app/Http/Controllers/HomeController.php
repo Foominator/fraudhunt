@@ -32,4 +32,12 @@ class HomeController extends Controller
     {
         return view('main.advices');
     }
+
+    /**
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+     */
+    public function rules()
+    {
+        return view('main.rules');
+    }
 }
