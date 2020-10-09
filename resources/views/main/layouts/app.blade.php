@@ -10,12 +10,22 @@
     <!-- Fonts -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 
+    <link rel="icon" type="image/png" href="{{asset('images/favicon.ico')}}"/>
 </head>
 <body>
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <a class="pl-5 navbar-brand" href="{{route('main')}}"><img src="{{asset('images/FraudHunt_Logo_160x55_5.png')}}"
                                                                width="25" alt=""></a>
     <a class="navbar-brand" href="{{route('main')}}">FRAUDHUNT</a>
+
+    @if (auth()->check() && auth()->user()->isAdmin())
+    <ul class="navbar-nav ml-auto">
+        <li class="nav-item pl-4">
+            <a class="nav-link" href="{{route('home')}}">AdminPanel</a>
+        </li>
+    </ul>
+    @endif
+
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
             aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
