@@ -29,7 +29,7 @@ class CardController extends AppBaseController
      */
     public function index(Request $request)
     {
-        $cards = $this->cardRepository->paginate(15);
+        $cards = $this->cardRepository->all();
         $cards->load('comment');
         return view('cards.index')
             ->with('cards', $cards);

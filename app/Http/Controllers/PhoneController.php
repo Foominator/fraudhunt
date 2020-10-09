@@ -29,7 +29,7 @@ class PhoneController extends AppBaseController
      */
     public function index(Request $request)
     {
-        $phones = $this->phoneRepository->paginate(15);
+        $phones = $this->phoneRepository->all();
         $phones->load('author');
         return view('phones.index')
             ->with('phones', $phones);

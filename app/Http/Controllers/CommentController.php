@@ -29,7 +29,7 @@ class CommentController extends AppBaseController
      */
     public function index(Request $request)
     {
-        $comments = $this->commentRepository->paginate(15);
+        $comments = $this->commentRepository->all();
         $comments->load(['author', 'phone']);
         return view('comments.index')
             ->with('comments', $comments);

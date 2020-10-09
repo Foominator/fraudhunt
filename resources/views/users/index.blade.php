@@ -21,7 +21,7 @@
         </div>
         <div class="text-center">
 
-            @include('adminlte-templates::common.paginate', ['records' => $users])
+{{--            @include('adminlte-templates::common.paginate', ['records' => $users])--}}
 
         </div>
     </div>

@@ -30,7 +30,7 @@ class UserController extends AppBaseController
      */
     public function index(Request $request)
     {
-        $users = $this->userRepository->paginate(15);
+        $users = $this->userRepository->all();
         $users->load('roles');
 
         return view('users.index')

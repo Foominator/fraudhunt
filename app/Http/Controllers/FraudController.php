@@ -40,6 +40,6 @@ class FraudController extends Controller
             ]);
         }
 
-        return response()->json(['Created successfully'], 200);
+        return response()->json(['Fraud created successfully'], 200);
     }
 }

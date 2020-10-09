@@ -20,7 +20,9 @@
             </div>
         </div>
         <div class="text-center">
-            @include('adminlte-templates::common.paginate', ['records' => $comments])
+
+{{--            @include('adminlte-templates::common.paginate', ['records' => $comments])--}}
+
         </div>
     </div>
 @endsection
