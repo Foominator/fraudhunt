@@ -16,3 +16,7 @@
     <a href="{{ route('comments.index') }}"><i class="fa fa-edit"></i><span>Comments</span></a>
 </li>
 
+<li class="{{ Request::is('cards*') ? 'active' : '' }}">
+    <a href="{{ route('cards.index') }}"><i class="fa fa-edit"></i><span>Cards</span></a>
+</li>
+

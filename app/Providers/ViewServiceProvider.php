@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Providers;
+use App\Models\Comment;
 use App\Models\Phone;
 use App\Models\User;
 
@@ -26,6 +27,10 @@ class ViewServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        View::composer(['cards.fields'], function ($view) {
+            $commentItems = Comment::pluck('description','id')->toArray();
+            $view->with('commentItems', $commentItems);
+        });
         View::composer(['comments.fields'], function ($view) {
             $phoneItems = Phone::pluck('number','id')->toArray();
             $view->with('phoneItems', $phoneItems);

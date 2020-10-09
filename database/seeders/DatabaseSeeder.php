@@ -18,6 +18,7 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class,
             PhoneSeeder::class,
             CommentSeeder::class,
+            CardSeeder::class,
         ]);
     }
 }

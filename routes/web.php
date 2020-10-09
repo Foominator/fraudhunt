@@ -25,5 +25,5 @@ Route::group(['middleware' => 'admin'], function () {
     Route::resource('users', App\Http\Controllers\UserController::class);
     Route::resource('phones', App\Http\Controllers\PhoneController::class);
     Route::resource('comments', App\Http\Controllers\CommentController::class);
+    Route::resource('cards', App\Http\Controllers\CardController::class);
 });
-

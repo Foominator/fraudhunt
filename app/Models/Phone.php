@@ -57,4 +57,16 @@ class Phone extends Model
     {
         return $this->belongsTo(\App\Models\User::class, 'author_id', 'id');
     }
+
+    public function cards()
+    {
+        return $this->hasManyThrough(
+            Card::class,
+            Comment::class,
+            'phone_id', // Foreign key on comments table...
+            'comment_id', // Foreign key on cards table...
+            'id', // Local key on phones table...
+            'id' // Local key on comments table...
+        );
+    }
 }
