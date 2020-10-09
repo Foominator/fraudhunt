@@ -17,7 +17,8 @@ class PhoneRepository extends BaseRepository
      * @var array
      */
     protected $fieldSearchable = [
-        'number'
+        'number',
+        'name',
     ];
 
     /**

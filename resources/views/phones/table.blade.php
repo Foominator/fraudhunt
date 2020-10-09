@@ -3,6 +3,7 @@
         <thead>
         <tr>
             <th>Number</th>
+            <th>Name</th>
             <th>Author</th>
             <th colspan="3">Action</th>
         </tr>
@@ -11,6 +12,7 @@
         @foreach($phones as $phone)
             <tr>
                 <td>{{ $phone->number }}</td>
+                <td>{{ $phone->name }}</td>
                 <td>
                     {{ $phone->author->name }}
                     <a href="{{ route('users.show', [$phone->author->id]) }}" class='btn btn-default btn-xs'><i

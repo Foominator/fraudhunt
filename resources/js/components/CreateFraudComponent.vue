@@ -16,7 +16,8 @@
                                 <span class="input-group-text bg-dark text-white"
                                       id="inputGroup-sizing-default">ФИО</span>
                             </div>
-                            <input type="text" class="form-control" v-model="fraudName" required>
+                            <input type="text" class="form-control"  placeholder="Неизвестный"
+                                   v-model="fraudName" required>
                         </div>
 
                         <div class="card">
@@ -28,7 +29,7 @@
 
                             <textarea class="form-control"
                                       v-model="fraudComment"
-                                      rows="6"
+                                      rows="6" placeholder="..."
                                       aria-label="With textarea"></textarea>
                                 </div>
                             </div>

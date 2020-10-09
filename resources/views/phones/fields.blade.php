@@ -4,6 +4,12 @@
     {!! Form::text('number', null, ['class' => 'form-control','maxlength' => 20]) !!}
 </div>
 
+<!-- Name Field -->
+<div class="form-group col-sm-6">
+    {!! Form::label('name', 'Name:') !!}
+    {!! Form::text('name', null, ['class' => 'form-control','maxlength' => 20]) !!}
+</div>
+
 <!-- Author Id Field -->
 <div class="form-group col-sm-6">
     {!! Form::label('author_id', 'Author:') !!}

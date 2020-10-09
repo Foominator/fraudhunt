@@ -25,7 +25,8 @@ class Phone extends Model
 
     public $fillable = [
         'number',
-        'author_id'
+        'name',
+        'author_id',
     ];
 
     /**
@@ -36,6 +37,7 @@ class Phone extends Model
     protected $casts = [
         'id' => 'integer',
         'number' => 'string',
+        'name' => 'string',
         'author_id' => 'integer'
     ];
 
@@ -46,6 +48,7 @@ class Phone extends Model
      */
     public static $rules = [
         'number' => 'required|string|max:20',
+        'name' => 'required|string|max:20',
         'created_at' => 'nullable|nullable',
         'updated_at' => 'nullable|nullable'
     ];
