@@ -37,19 +37,18 @@
 
                             <textarea class="form-control"
                                       v-model="fraudComment"
-                                      rows="6" placeholder="..." required
+                                      rows="6" placeholder="Опишите ситуацию..." required
                                       aria-label="With textarea"></textarea>
                                 </div>
                             </div>
                         </div>
-
 
                         <div class="input-group mb-3 mt-4">
                             <div class="input-group-prepend ">
                                 <span class="input-group-text bg-dark text-white">Телефон</span>
                             </div>
                             <input type="text" class="form-control" v-model="fraudPhone"
-                                   maxlength="12" placeholder="0930000000" required>
+                                   maxlength="10" placeholder="0930000000" required>
                         </div>
 
                         <div class="help-block"></div>
@@ -118,6 +117,10 @@
                 };
                 window.axios.post('/frauds/store', params).then(({data}) => {
                     this.showMessages(data);
+                    this.fraudName = '';
+                    this.fraudComment = '';
+                    this.fraudPhone = '';
+                    this.fraudCards = [];
                 }).catch(error => {
                     if (422 === error.response.status) {
                         this.showErrors(error.response.data.errors);
