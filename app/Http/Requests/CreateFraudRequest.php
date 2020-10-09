@@ -26,8 +26,8 @@ class CreateFraudRequest extends FormRequest
     {
         return [
             'name' => 'string|required|min:3',
-            'comment' => 'string',
-            'phone' => 'string|required|min:5',
+            'comment' => 'string|required',
+            'phone' => 'string|required|min:5|unique:phones,number',
             'cards' => 'array',
             'cards.*' => 'string|min:16|max:16',
         ];

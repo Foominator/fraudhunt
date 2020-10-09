@@ -7,6 +7,14 @@
             </div>
         </div>
 
+        <div class="alert alert-danger" role="alert" v-for="error in errors">
+            {{error}}
+        </div>
+
+        <div class="alert alert-primary" role="alert" v-for="message in messages">
+            {{message}}
+        </div>
+
         <div class="row">
             <div class="col-lg-6 offset-lg-3">
                 <form action="#" method="post" @submit="createFraud">
@@ -16,7 +24,7 @@
                                 <span class="input-group-text bg-dark text-white"
                                       id="inputGroup-sizing-default">ФИО</span>
                             </div>
-                            <input type="text" class="form-control"  placeholder="Неизвестный"
+                            <input type="text" class="form-control" placeholder="Неизвестный"
                                    v-model="fraudName" required>
                         </div>
 
@@ -29,7 +37,7 @@
 
                             <textarea class="form-control"
                                       v-model="fraudComment"
-                                      rows="6" placeholder="..."
+                                      rows="6" placeholder="..." required
                                       aria-label="With textarea"></textarea>
                                 </div>
                             </div>
@@ -78,6 +86,8 @@
     export default {
         data() {
             return {
+                messages: [],
+                errors: [],
                 fraudName: '',
                 fraudComment: '',
                 fraudPhone: '',
@@ -107,11 +117,27 @@
                     cards: this.fraudCards,
                 };
                 window.axios.post('/frauds/store', params).then(({data}) => {
-                    console.log(data);
+                    this.showMessages(data);
+                }).catch(error => {
+                    if (422 === error.response.status) {
+                        this.showErrors(error.response.data.errors);
+                    }
                 });
 
                 console.log('success');
                 e.preventDefault();
+            },
+            showMessages(messages) {
+                this.messages = messages;
+                setTimeout(() => {
+                    this.messages = [];
+                }, 3000);
+            },
+            showErrors(errors) {
+                this.errors = errors;
+                setTimeout(() => {
+                    this.errors = [];
+                }, 3000);
             }
         },
     }

@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\CreateFraudRequest;
+use App\Repositories\CardRepository;
+use App\Repositories\CommentRepository;
+use App\Repositories\PhoneRepository;
 
 class FraudController extends Controller
 {
@@ -16,6 +19,27 @@ class FraudController extends Controller
 
     public function store(CreateFraudRequest $request)
     {
-        return response()->json($request->all());
+        $phone = app()->make(PhoneRepository::class)->create([
+            'number' => $request->phone,
+            'name' => $request->name,
+            'author_id' => auth()->user()->id,
+        ]);
+
+        $comment = app()->make(CommentRepository::class)->create([
+            'description' => $request->comment,
+            'status ' => 'approved',
+            'author_id' => auth()->user()->id,
+            'phone_id' => $phone->id,
+        ]);
+
+        $cardRepository = app()->make(CardRepository::class);
+        foreach ($request->cards as $card) {
+            $cardRepository->create([
+                'card_num' => $card,
+                'comment_id' => $comment->id,
+            ]);
+        }
+
+        return response()->json(['Created successfully'], 200);
     }
 }
