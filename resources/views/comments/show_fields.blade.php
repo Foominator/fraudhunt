@@ -21,4 +21,3 @@
     {!! Form::label('phone_id', 'Phone Id:') !!}
     <p>{{ $comment->phone_id }}</p>
 </div>
-

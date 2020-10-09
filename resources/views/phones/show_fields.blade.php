@@ -9,4 +9,3 @@
     {!! Form::label('author_id', 'Author Id:') !!}
     <p>{{ $phone->author_id }}</p>
 </div>
-

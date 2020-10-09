@@ -27,4 +27,3 @@
     {!! Form::label('remember_token', 'Remember Token:') !!}
     <p>{{ $user->remember_token }}</p>
 </div>
-

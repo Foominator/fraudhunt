@@ -13,7 +13,7 @@
                 <div class="row">
                     {!! Form::open(['route' => 'comments.store']) !!}
 
-                        @include('comments.fields')
+                    @include('comments.fields')
 
                     {!! Form::close() !!}
                 </div>

@@ -9,4 +9,3 @@
     {!! Form::label('comment_id', 'Comment Id:') !!}
     <p>{{ $card->comment_id }}</p>
 </div>
-
