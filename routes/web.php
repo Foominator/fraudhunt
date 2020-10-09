@@ -24,4 +24,6 @@ Route::group(['middleware' => 'admin'], function () {
     Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
     Route::resource('users', App\Http\Controllers\UserController::class);
     Route::resource('phones', App\Http\Controllers\PhoneController::class);
+    Route::resource('comments', App\Http\Controllers\CommentController::class);
 });
+

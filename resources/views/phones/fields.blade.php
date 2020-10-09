@@ -6,8 +6,8 @@
 
 <!-- Author Id Field -->
 <div class="form-group col-sm-6">
-    {!! Form::label('author_id', 'Author Id:') !!}
-    {!! Form::text('author_id', null, ['class' => 'form-control']) !!}
+    {!! Form::label('author_id', 'Author:') !!}
+    {!! Form::select('author_id', $userItems, null, ['class' => 'form-control']) !!}
 </div>
 
 <!-- Submit Field -->
