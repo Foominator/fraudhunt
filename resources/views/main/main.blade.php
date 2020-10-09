@@ -28,7 +28,7 @@
                 </p>
                 <a class="btn btn-danger btn-lg" href="{{route('advices')}}">Читать советы</a></div>
             <div class="col-lg-4 text-center">
-                <a href="/frauds"><img src="{{ asset('images/StopFraudFinger1_600-300x300.png') }}" alt=""></a>
+                <a href="{{route('fraud.index')}}"><img src="{{ asset('images/StopFraudFinger1_600-300x300.png') }}" alt=""></a>
                 <h3>Пробей мошенника по базе</h3>
                 <p>
                     Собираетесь совершить покупку через Интернет? Потеряли что-либо и теперь вам звонят с предложениями
@@ -37,7 +37,7 @@
                 <p>
                     <strong> Проверьте базу данных FraudHunt - не станьте жертвой мошенников!</strong>
                 </p>
-                <a class="btn btn-danger btn-lg" href="/frauds">Проверить в базе</a></div>
+                <a class="btn btn-danger btn-lg" href="{{route('fraud.index')}}">Проверить в базе</a></div>
             <div class="col-lg-4 text-center">
                 <a href="{{route('fraud.create')}}"><img src="{{ asset('images/StopFraudFinger3_600-300x300.png') }}" alt=""></a>
                 <h3>Сообщи об аферисте</h3>

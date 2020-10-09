@@ -17,6 +17,14 @@ class FraudController extends Controller
         return view('main.fraud.create');
     }
 
+    /**
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+     */
+    public function index()
+    {
+        return view('main.fraud.index');
+    }
+
     public function store(CreateFraudRequest $request)
     {
         $phone = app()->make(PhoneRepository::class)->create([

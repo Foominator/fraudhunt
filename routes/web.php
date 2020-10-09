@@ -27,6 +27,7 @@ Route::group(['middleware' => 'admin'], function () {
     Route::resource('cards', App\Http\Controllers\CardController::class);
 });
 
+Route::get('/frauds', [App\Http\Controllers\FraudController::class, 'index'])->name('fraud.index');
 Route::group(['middleware' => 'auth'], function () {
     Route::get('/frauds/create', [App\Http\Controllers\FraudController::class, 'create'])->name('fraud.create');
     Route::post('/frauds/store', [App\Http\Controllers\FraudController::class, 'store'])->name('fraud.store');
