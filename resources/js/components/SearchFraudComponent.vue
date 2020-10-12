@@ -41,7 +41,13 @@
 
             <div class="card" v-for="fraud in searchResults">
                 <div class="card-header">
-                    {{fraud.name}} - {{fraud.number}} <span class="float-right">Мошенник {{fraud.fraudPercent}}%</span>
+                    {{fraud.name}} - {{fraud.number}} <span class="float-right"
+                                                            v-bind:class="{
+                                                            'text-danger': fraud.fraudPercent > 50 ,
+                                                            'text-success': fraud.fraudPercent < 50 ,
+                                                            }">
+                    Мошенник {{fraud.fraudPercent}}%
+                </span>
                 </div>
                 <div class="card-body padding-0 text-center">
                     <table class="table table-bordered">

@@ -43,10 +43,10 @@
                     <li class="nav-item pl-4 @if('rules' === $currentRouteName) active @endif">
                         <a class="nav-link" href="{{route('rules')}}">Правила</a> <!-- rules -->
                     </li>
-                    <li class="nav-item pl-4 @if('frauds' === $currentRouteName) active @endif">
+                    <li class="nav-item pl-4 @if('fraud.index' === $currentRouteName) active @endif">
                         <a class="nav-link" href="{{route('fraud.index')}}">Мошенники</a> <!-- frauds -->
                     </li>
-                    <li class="nav-item pl-4 @if('add_frauds' === $currentRouteName) active @endif">
+                    <li class="nav-item pl-4 @if('fraud.create' === $currentRouteName) active @endif">
                         <a class="nav-link" href="{{route('fraud.create')}}">Добавить мошенника</a> <!-- add_fraud -->
                     </li>
                     <li class="nav-item pl-4 @if('advices' === $currentRouteName) active @endif">
