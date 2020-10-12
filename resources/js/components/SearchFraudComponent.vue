@@ -193,6 +193,7 @@
                         this.firstComment = data.first_comment;
                         this.comments = data.comments.data;
                         this.maxPage = data.comments.last_page;
+                        this.fraudPercent = data.fraud_percent;
                         this.calculateSearchResults();
                     }
                 }).catch(error => {
@@ -222,19 +223,11 @@
                 var date = new Date(this.firstComment.created_at);
                 this.firstComment.date = ("0" + date.getDate()).slice(-2) + '.' + ("0" + (date.getMonth() + 1)).slice(-2) + '.' + date.getFullYear();
 
-                var approvedCount = 0;
-                var commentsCount = 0;
                 this.comments = this.comments.sort((b, a) => (a.created_at > b.created_at) ? 1 : ((b.created_at > a.created_at) ? -1 : 0));
                 for (var j in this.comments) {
-                    if ('approved' === this.comments[j].status) {
-                        approvedCount++;
-                    }
-                    commentsCount++;
                     var mydate = new Date(this.comments[j].created_at);
                     this.comments[j].date = ("0" + mydate.getDate()).slice(-2) + '.' + ("0" + (mydate.getMonth() + 1)).slice(-2) + '.' + mydate.getFullYear();
                 }
-                this.fraudPercent = approvedCount / commentsCount * 100;
-                this.fraudPercent = Math.round(this.fraudPercent * 10) / 10;
             },
             showErrors(errors) {
                 this.errors = errors;

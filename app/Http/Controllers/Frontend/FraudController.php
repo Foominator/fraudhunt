@@ -73,9 +73,15 @@ class FraudController extends Controller
             $query->where('number', '=', $phone);
         })->orderBy('created_at', 'desc')->where('id', '!=', $firstComment->id)->paginate(10);
 
+        $fraudApproved = Comment::with('phone', 'cards')->whereHas('phone', function (Builder $query) use ($phone) {
+            $query->where('number', '=', $phone);
+        })->where('status', 'approved')->count();
+        $fraudPercent = round($fraudApproved / ($comments->total() + 1) * 1000) / 10;
+
         return response()->json([
             'first_comment' => $firstComment,
             'comments' => $comments,
+            'fraud_percent' => $fraudPercent,
         ], 200);
     }
 }
