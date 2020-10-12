@@ -4,11 +4,9 @@ namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CreateFraudRequest;
+use App\Models\Card;
 use App\Models\Comment;
 use App\Models\Phone;
-use App\Repositories\CardRepository;
-use App\Repositories\CommentRepository;
-use App\Repositories\PhoneRepository;
 use Illuminate\Database\Eloquent\Builder;
 
 class FraudController extends Controller
@@ -32,24 +30,25 @@ class FraudController extends Controller
 
     public function store(CreateFraudRequest $request)
     {
-        $phone = app()->make(PhoneRepository::class)->create([
-            'number' => $request->phone,
-            'author_id' => auth()->user()->id,
-        ]);
-
-        $comment = app()->make(CommentRepository::class)->create([
-            'description' => $request->comment,
-            'status ' => 'approved',
-            'author_id' => auth()->user()->id,
-            'phone_id' => $phone->id,
-        ]);
-
-        $cardRepository = app()->make(CardRepository::class);
-        foreach ($request->cards as $card) {
-            $cardRepository->create([
-                'card_num' => $card,
-                'comment_id' => $comment->id,
+        foreach ($request->phones as $phoneNumber) {
+            $phone = Phone::create([
+                'number' => $phoneNumber,
+                'author_id' => auth()->user()->id,
             ]);
+
+            $comment = Comment::create([
+                'description' => $request->comment,
+                'status ' => 'approved',
+                'author_id' => auth()->user()->id,
+                'phone_id' => $phone->id,
+            ]);
+
+            foreach ($request->cards as $card) {
+                Card::create([
+                    'card_num' => $card,
+                    'comment_id' => $comment->id,
+                ]);
+            }
         }
 
         return response()->json(['Fraud created successfully'], 200);

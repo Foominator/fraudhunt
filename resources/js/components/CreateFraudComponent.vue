@@ -27,6 +27,25 @@
                                    maxlength="10" placeholder="0930000000" required>
                         </div>
 
+                        <div class="input-group mb-3 mt-4" v-for="i in additionalPhonesCount">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text bg-dark text-white">Телефон</span>
+                            </div>
+                            <input type="text" v-model="additionalPhones[i-1]" class="form-control"
+                                   maxlength="10"
+                                   placeholder="0930000000">
+                            <div class="input-group-append pointer" @click="deleteAdditionalPhone(i-1)">
+                                <span class="input-group-text"><i class="fa fa-times"></i></span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                        <span class="text-secondary pointer" @click="addAdditionalPhone()"
+                              v-if="additionalPhonesCount < 3">
+                            Добавить еще телефон <i class="fa fa-plus"></i>
+                        </span>
+                        </div>
+
                         <div class="card">
                             <div class="card-header bg-dark text-white">
                                 Подробнее
@@ -58,9 +77,9 @@
                     </div>
 
                     <div class="form-group">
-                        <button type="button" class="btn btn-primary" @click="addCard()" v-if="fraudCardsCount < 3">
-                            Добавить карту <i class="fa fa-plus"></i>
-                        </button>
+                        <span class="text-secondary pointer" @click="addCard()" v-if="fraudCardsCount < 3">
+                            Добавить еще карту <i class="fa fa-plus"></i>
+                        </span>
                     </div>
 
                     <div class="form-group">
@@ -83,11 +102,27 @@
                 fraudPhone: '',
                 fraudCards: [],
                 fraudCardsCount: 1,
+
+                additionalPhones: [],
+                additionalPhonesCount: 0
             };
         },
         methods: {
             addCard() {
                 this.fraudCardsCount++;
+            },
+            addAdditionalPhone() {
+                this.additionalPhonesCount++;
+            },
+            deleteAdditionalPhone(phoneI) {
+                if (0 < this.additionalPhonesCount) {
+                    for (var key in this.additionalPhones) {
+                        if (key == this.additionalPhonesCount - 1) {
+                            this.additionalPhones.splice(phoneI, 1);
+                        }
+                    }
+                    this.additionalPhonesCount--;
+                }
             },
             deleteCard(cardI) {
                 if (0 < this.fraudCardsCount) {
@@ -100,9 +135,11 @@
                 }
             },
             createFraud(e) {
+                const phones = this.additionalPhones;
+                phones.push(this.fraudPhone);
                 const params = {
                     comment: this.fraudComment,
-                    phone: this.fraudPhone,
+                    phones: phones,
                     cards: this.fraudCards,
                 };
                 window.axios.post('/frauds/store', params).then(({data}) => {
@@ -110,6 +147,7 @@
                     this.fraudComment = '';
                     this.fraudPhone = '';
                     this.fraudCards = [];
+                    this.additionalPhones = [];
                 }).catch(error => {
                     if (422 === error.response.status) {
                         this.showErrors(error.response.data.errors);
