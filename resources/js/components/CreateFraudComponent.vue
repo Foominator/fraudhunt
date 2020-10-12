@@ -94,6 +94,7 @@
 <script>
     export default {
         name: "CreateFraudComponent",
+        props: ["routes"],
         data() {
             return {
                 messages: [],
@@ -142,7 +143,7 @@
                     phones: phones,
                     cards: this.fraudCards,
                 };
-                window.axios.post('/frauds/store', params).then(({data}) => {
+                window.axios.post('/' + this.routes['fraud.store'], params).then(({data}) => {
                     this.showMessages(data);
                     this.fraudComment = '';
                     this.fraudPhone = '';

@@ -4,6 +4,6 @@
 
 @section('content')
     <div class="container pt-4">
-        <create-fraud></create-fraud>
+        <create-fraud :routes="{{json_encode($routes)}}"></create-fraud>
     </div>
 @endsection

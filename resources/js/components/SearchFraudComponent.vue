@@ -12,21 +12,18 @@
             <div class="col-lg-3">
 
                 <div class="fraud-search">
-                    <form id="w0" action="/frauds" method="get">
+                    <div class="form-group field-fraudsearch-phone">
+                        <label class="control-label">Для поиска введите полный номер
+                            телефона (10 цифр начиная с "0")</label>
+                        <input type="text" v-model="searchPhone" class="form-control"
+                               maxlength="10" minlength="10" placeholder="0930000000">
 
-                        <div class="form-group field-fraudsearch-phone">
-                            <label class="control-label">Для поиска введите полный номер
-                                телефона (10 цифр начиная с "0")</label>
-                            <input type="text" v-model="searchPhone" class="form-control"
-                                   maxlength="10" minlength="10" placeholder="0930000000">
-
-                            <div class="help-block"></div>
-                        </div>
-                        <div class="form-group">
-                            <button type="button" class="btn btn-primary" @click="search()">Поиск</button>
-                            <button type="reset" class="btn btn-secondary" @click="resetSearch()">Сброс</button>
-                        </div>
-                    </form>
+                        <div class="help-block"></div>
+                    </div>
+                    <div class="form-group">
+                        <button type="button" class="btn btn-primary" @click="search()">Поиск</button>
+                        <button type="reset" class="btn btn-secondary" @click="resetSearch()">Сброс</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -101,7 +98,8 @@
                         <span v-if="comment.status === 'declined'"><i class="fa fa-minus"></i></span>
                     </div>
                 </div>
-                <button class="btn btn-secondary mt-2" v-if="currentPage < maxPage" @click="loadPage">Показать еще</button>
+                <button class="btn btn-secondary mt-2" v-if="currentPage < maxPage" @click="loadPage">Показать еще
+                </button>
                 <h3 class="mt-4">Добавить комментарий</h3>
                 <div class="input-group">
 
@@ -187,7 +185,7 @@
                 this.comments = [];
                 this.firstComment = [];
                 this.currentPage = 1;
-                window.axios.get('/frauds/search', {params: {phone: this.searchPhone}}).then(({data}) => {
+                window.axios.get(this.routes['fraud.search'], {params: {phone: this.searchPhone}}).then(({data}) => {
                     this.showResult = true;
                     if (data.first_comment.id !== undefined) {
                         this.firstComment = data.first_comment;
@@ -206,7 +204,7 @@
             loadPage() {
                 if (this.currentPage < this.maxPage) {
                     this.currentPage++;
-                    window.axios.get('/frauds/search', {
+                    window.axios.get(this.routes['fraud.search'], {
                         params: {
                             phone: this.searchPhone,
                             page: this.currentPage

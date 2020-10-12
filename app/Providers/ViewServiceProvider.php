@@ -41,7 +41,7 @@ class ViewServiceProvider extends ServiceProvider
             $view->with('userItems', $userItems);
         });
 
-        View::composer(['main.fraud.index'], function ($view) {
+        View::composer(['main.fraud.index', 'main.fraud.create'], function ($view) {
             $routes = collect(\Route::getRoutes())->mapWithKeys(function ($route) {
                 return [$route->getName() => $route->uri()];
             });

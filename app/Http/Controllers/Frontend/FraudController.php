@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\CreateFraudRequest;
+use App\Http\Requests\Frontend\CreateFraudRequest;
 use App\Models\Card;
 use App\Models\Comment;
 use App\Models\Phone;
@@ -28,6 +28,10 @@ class FraudController extends Controller
         return view('main.fraud.index', compact('fraudsCount'));
     }
 
+    /**
+     * @param CreateFraudRequest $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function store(CreateFraudRequest $request)
     {
         foreach ($request->phones as $phoneNumber) {
@@ -54,6 +58,9 @@ class FraudController extends Controller
         return response()->json(['Fraud created successfully'], 200);
     }
 
+    /**
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function search()
     {
         request()->validate(['phone' => 'required|string|min:10|max:10']);
@@ -83,5 +90,10 @@ class FraudController extends Controller
             'comments' => $comments,
             'fraud_percent' => $fraudPercent,
         ], 200);
+    }
+
+    public function comment()
+    {
+
     }
 }
