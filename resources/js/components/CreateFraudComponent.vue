@@ -83,6 +83,7 @@
 </template>
 <script>
     export default {
+        name: "CreateFraudComponent",
         data() {
             return {
                 messages: [],
