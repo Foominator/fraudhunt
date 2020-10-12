@@ -36,37 +36,57 @@
         </p>
 
         <div v-if="showResult">
-            <p v-if="searchResults.length === 0">По вашему запросу ничего не найдено</p>
-            <div v-for="fraud in searchResults">
+            <p v-if="firstComment.id === undefined">По вашему запросу ничего не найдено</p>
 
+            <div v-if="firstComment.id > 0">
                 <h1>
-                    Результат поиска. <span class="text-secondary">Телефон - {{fraud.number}} </span>
+                    Результат поиска. <span
+                    class="text-secondary">Телефон - {{firstComment.phone.number}} </span>
                     <span class="float-right"
-                          v-bind:class="{ 'text-danger': fraud.fraudPercent > 50 ,'text-success': fraud.fraudPercent < 50 }">
-                    Мошенник {{fraud.fraudPercent}}%
+                          v-bind:class="{ 'text-danger': this.fraudPercent > 50 ,'text-success': this.fraudPercent < 50 }">
+                    Мошенник {{this.fraudPercent}}%
                     </span>
                 </h1>
 
-
-                <div class="row text-center">
-                    <div class="col-md-1">
-                        Дата
+                <div class="">
+                    <div class="row rounded border-top border-left border-right border-dark text-center">
+                        <div class="col-md-1">
+                            Дата
+                        </div>
+                        <div class="col-md-8">
+                            Комментарий
+                        </div>
+                        <div class="col-md-2">
+                            Карты
+                        </div>
+                        <div class="col-md-1">
+                            Мошенник
+                        </div>
                     </div>
-                    <div class="col-md-8">
-                        Комментарий
+                    <div class="row rounded border-bottom border-left border-right border-dark">
+                        <div class="col-md-1">
+                            {{firstComment.date}}
+                        </div>
+                        <div class="col-md-8">
+                            {{firstComment.description}}
+                        </div>
+                        <div class="col-md-2">
+                        <span v-for="card in firstComment.cards">
+                                    {{card.card_num}}
+                                </span>
+                        </div>
+                        <div class="col-md-1 text-center">
+                            <span v-if="firstComment.status === 'approved'"><i class="fa fa-plus"></i></span>
+                            <span v-if="firstComment.status === 'declined'"><i
+                                class="fa fa-minus"></i></span>
+                        </div>
                     </div>
-                    <div class="col-md-2">
-                        Карты
-                    </div>
-                    <div class="col-md-1">
-                        Мошенник
-                    </div>
-
                 </div>
+                <br>
 
-                <div class="row border rounded mt-2" v-for="comment in fraud.comments">
-                    <div class="col-md-1 text-right">
-                        {{comment.created_at}}
+                <div class="row border rounded mt-2" v-for="comment in comments">
+                    <div class="col-md-1 text-right border small">
+                        {{comment.date}}
                     </div>
                     <div class="col-md-8 text-left">
                         {{comment.description}}
@@ -81,8 +101,8 @@
                         <span v-if="comment.status === 'declined'"><i class="fa fa-minus"></i></span>
                     </div>
                 </div>
-                <br>
-                <h3>Добавить комментарий</h3>
+                <button class="btn btn-secondary mt-2" v-if="currentPage < maxPage" @click="loadPage">Показать еще</button>
+                <h3 class="mt-4">Добавить комментарий</h3>
                 <div class="input-group">
 
                             <textarea class="form-control"
@@ -134,11 +154,17 @@
                 showResult: false,
                 searchPhone: '',
                 searchResults: [],
+                firstComment: [],
+                fraudPercent: 0,
+                comments: [],
 
                 commentText: '',
                 commentStatus: true,
                 fraudCards: [],
                 fraudCardsCount: 1,
+
+                currentPage: 1,
+                maxPage: 1,
             }
         },
         mounted() {
@@ -158,10 +184,17 @@
                 }
             },
             search() {
+                this.comments = [];
+                this.firstComment = [];
+                this.currentPage = 1;
                 window.axios.get('/frauds/search', {params: {phone: this.searchPhone}}).then(({data}) => {
                     this.showResult = true;
-                    this.searchResults = data;
-                    this.calculateFraudStats();
+                    if (data.first_comment.id !== undefined) {
+                        this.firstComment = data.first_comment;
+                        this.comments = data.comments.data;
+                        this.maxPage = data.comments.last_page;
+                        this.calculateSearchResults();
+                    }
                 }).catch(error => {
                     console.log(error);
                     if (422 === error.response.status) {
@@ -169,23 +202,39 @@
                     }
                 });
             },
-            calculateFraudStats() {
-                for (var i in this.searchResults) {
-                    var approvedCount = 0;
-                    var commentsCount = 0;
-                    var fraud = this.searchResults[i];
-                    this.searchResults[i].comments = fraud.comments.sort((b, a) => (a.created_at > b.created_at) ? 1 : ((b.created_at > a.created_at) ? -1 : 0));
-                    for (var j in fraud.comments) {
-                        if ('approved' === fraud.comments[j].status) {
-                            approvedCount++;
+            loadPage() {
+                if (this.currentPage < this.maxPage) {
+                    this.currentPage++;
+                    window.axios.get('/frauds/search', {
+                        params: {
+                            phone: this.searchPhone,
+                            page: this.currentPage
                         }
-                        commentsCount++;
-                        var mydate = new Date(fraud.comments[j].created_at);
-                        fraud.comments[j].created_at = mydate.getDate() + '.' + mydate.getMonth() + '.' + mydate.getFullYear();
-                    }
-                    this.searchResults[i].fraudPercent = approvedCount / commentsCount * 100;
-                    this.searchResults[i].fraudPercent = Math.round(this.searchResults[i].fraudPercent * 10) / 10;
+                    }).then(({data}) => {
+                        for (var i in data.comments.data) {
+                            this.comments.push(data.comments.data[i]);
+                        }
+                        this.calculateSearchResults();
+                    });
                 }
+            },
+            calculateSearchResults() {
+                var date = new Date(this.firstComment.created_at);
+                this.firstComment.date = ("0" + date.getDate()).slice(-2) + '.' + ("0" + (date.getMonth() + 1)).slice(-2) + '.' + date.getFullYear();
+
+                var approvedCount = 0;
+                var commentsCount = 0;
+                this.comments = this.comments.sort((b, a) => (a.created_at > b.created_at) ? 1 : ((b.created_at > a.created_at) ? -1 : 0));
+                for (var j in this.comments) {
+                    if ('approved' === this.comments[j].status) {
+                        approvedCount++;
+                    }
+                    commentsCount++;
+                    var mydate = new Date(this.comments[j].created_at);
+                    this.comments[j].date = ("0" + mydate.getDate()).slice(-2) + '.' + ("0" + (mydate.getMonth() + 1)).slice(-2) + '.' + mydate.getFullYear();
+                }
+                this.fraudPercent = approvedCount / commentsCount * 100;
+                this.fraudPercent = Math.round(this.fraudPercent * 10) / 10;
             },
             showErrors(errors) {
                 this.errors = errors;
@@ -195,7 +244,9 @@
             },
             resetSearch() {
                 this.showResult = false;
-                this.searchResults = [];
+                this.comments = [];
+                this.firstComment = [];
+                this.currentPage = 1;
             }
         }
     }

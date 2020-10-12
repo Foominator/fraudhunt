@@ -4,10 +4,12 @@ namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CreateFraudRequest;
+use App\Models\Comment;
 use App\Models\Phone;
 use App\Repositories\CardRepository;
 use App\Repositories\CommentRepository;
 use App\Repositories\PhoneRepository;
+use Illuminate\Database\Eloquent\Builder;
 
 class FraudController extends Controller
 {
@@ -57,7 +59,24 @@ class FraudController extends Controller
     {
         request()->validate(['phone' => 'required|string|min:10|max:10']);
         $phone = request()->phone;
-        $frauds = Phone::with('comments.cards')->where('number', 'like', "%$phone%")->get();
-        return response()->json($frauds, 200);
+        $firstComment = Comment::with('phone', 'cards')->whereHas('phone', function (Builder $query) use ($phone) {
+            $query->where('number', '=', $phone);
+        })->orderBy('created_at', 'asc')->first();
+
+        if (!$firstComment) {
+            return response()->json([
+                'first_comment' => [],
+                'comments' => [],
+            ], 200);
+        }
+
+        $comments = Comment::with('phone', 'cards')->whereHas('phone', function (Builder $query) use ($phone) {
+            $query->where('number', '=', $phone);
+        })->orderBy('created_at', 'desc')->where('id', '!=', $firstComment->id)->paginate(10);
+
+        return response()->json([
+            'first_comment' => $firstComment,
+            'comments' => $comments,
+        ], 200);
     }
 }
