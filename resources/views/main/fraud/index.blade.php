@@ -4,6 +4,6 @@
 
 @section('content')
     <div class="container pt-4">
-        test
+        <search-fraud></search-fraud>
     </div>
 @endsection

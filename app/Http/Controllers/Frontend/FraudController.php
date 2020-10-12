@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Frontend;
 
+use App\Http\Controllers\Controller;
 use App\Http\Requests\CreateFraudRequest;
 use App\Repositories\CardRepository;
 use App\Repositories\CommentRepository;

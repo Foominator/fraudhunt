@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
 use App\Http\Requests\CreatePhoneRequest;
 use App\Http\Requests\UpdatePhoneRequest;
 use App\Repositories\PhoneRepository;
 use App\Http\Controllers\AppBaseController;
 use Illuminate\Http\Request;
-use Flash;
-use Response;
+use Laracasts\Flash\Flash;
+use Illuminate\Support\Facades\Response;
 
 class PhoneController extends AppBaseController
 {
@@ -133,9 +133,9 @@ class PhoneController extends AppBaseController
      *
      * @param int $id
      *
+     * @return Response
      * @throws \Exception
      *
-     * @return Response
      */
     public function destroy($id)
     {
