@@ -24,7 +24,6 @@ class PhoneFactory extends Factory
     {
         return [
             'number' => $this->faker->numberBetween(1111111111, 9999999999),
-            'name' => $this->faker->name,
             'author_id' => User::get()->random()->id,
             'created_at' => $this->faker->date('Y-m-d H:i:s'),
             'updated_at' => $this->faker->date('Y-m-d H:i:s')

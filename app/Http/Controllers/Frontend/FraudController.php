@@ -32,7 +32,6 @@ class FraudController extends Controller
     {
         $phone = app()->make(PhoneRepository::class)->create([
             'number' => $request->phone,
-            'name' => $request->name,
             'author_id' => auth()->user()->id,
         ]);
 

@@ -19,13 +19,12 @@
             <div class="col-lg-6 offset-lg-3">
                 <form action="#" method="post" @submit="createFraud">
                     <div class="fraud-form">
-                        <div class="input-group mb-3">
+                        <div class="input-group mb-3 mt-4">
                             <div class="input-group-prepend ">
-                                <span class="input-group-text bg-dark text-white"
-                                      id="inputGroup-sizing-default">ФИО</span>
+                                <span class="input-group-text bg-dark text-white">Телефон</span>
                             </div>
-                            <input type="text" class="form-control" placeholder="Неизвестный"
-                                   v-model="fraudName" required>
+                            <input type="text" class="form-control" v-model="fraudPhone"
+                                   maxlength="10" placeholder="0930000000" required>
                         </div>
 
                         <div class="card">
@@ -43,32 +42,24 @@
                             </div>
                         </div>
 
-                        <div class="input-group mb-3 mt-4">
-                            <div class="input-group-prepend ">
-                                <span class="input-group-text bg-dark text-white">Телефон</span>
-                            </div>
-                            <input type="text" class="form-control" v-model="fraudPhone"
-                                   maxlength="10" placeholder="0930000000" required>
-                        </div>
-
                         <div class="help-block"></div>
                     </div>
 
                     <div class="input-group mb-3 mt-4" v-for="i in fraudCardsCount">
-                        <div class="input-group-prepend ">
-                            <span class="input-group-text bg-dark text-white">Номер карты № {{i}}</span>
+                        <div class="input-group-prepend">
+                            <span class="input-group-text bg-dark text-white">Карта № {{i}}</span>
                         </div>
                         <input type="text" v-model="fraudCards[i-1]" class="form-control" maxlength="16"
                                minlength="16"
                                placeholder="0000000000000000">
+                        <div class="input-group-append pointer" @click="deleteCard(i-1)">
+                            <span class="input-group-text"><i class="fa fa-times"></i></span>
+                        </div>
                     </div>
 
                     <div class="form-group">
                         <button type="button" class="btn btn-primary" @click="addCard()" v-if="fraudCardsCount < 3">
-                            Добавить карту
-                        </button>
-                        <button type="button" class="btn btn-secondary" @click="deleteCard()"
-                                v-if="fraudCardsCount > 0">Убрать карту
+                            Добавить карту <i class="fa fa-plus"></i>
                         </button>
                     </div>
 
@@ -88,7 +79,6 @@
             return {
                 messages: [],
                 errors: [],
-                fraudName: '',
                 fraudComment: '',
                 fraudPhone: '',
                 fraudCards: [],
@@ -99,11 +89,11 @@
             addCard() {
                 this.fraudCardsCount++;
             },
-            deleteCard() {
+            deleteCard(cardI) {
                 if (0 < this.fraudCardsCount) {
                     for (var key in this.fraudCards) {
                         if (key == this.fraudCardsCount - 1) {
-                            this.fraudCards.splice(key, 1);
+                            this.fraudCards.splice(cardI, 1);
                         }
                     }
                     this.fraudCardsCount--;
@@ -111,14 +101,12 @@
             },
             createFraud(e) {
                 const params = {
-                    name: this.fraudName,
                     comment: this.fraudComment,
                     phone: this.fraudPhone,
                     cards: this.fraudCards,
                 };
                 window.axios.post('/frauds/store', params).then(({data}) => {
                     this.showMessages(data);
-                    this.fraudName = '';
                     this.fraudComment = '';
                     this.fraudPhone = '';
                     this.fraudCards = [];
