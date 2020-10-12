@@ -80,6 +80,20 @@ class User extends Authenticatable
      */
     public function isAdmin(): bool
     {
-        return $this->roles()->where('roles.id', '=', Role::ADMIN_ROLE_ID)->exists();
+        return $this->roles()->where('roles.slug', '=', Role::ADMIN_ROLE_SLUG)->exists();
+    }
+
+    /**
+     * @param string $roleSlug
+     * @return bool
+     */
+    public function attachRole(string $roleSlug)
+    {
+        $role = Role::where('slug', $roleSlug)->first();
+        if (!$role) {
+            return false;
+        }
+        $this->roles()->attach($role);
+        return true;
     }
 }
