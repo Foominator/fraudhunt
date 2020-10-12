@@ -61,6 +61,11 @@ class Phone extends Model
         return $this->belongsTo(\App\Models\User::class, 'author_id', 'id');
     }
 
+    public function comments()
+    {
+        return $this->hasMany(\App\Models\Comment::class, 'phone_id', 'id');
+    }
+
     public function cards()
     {
         return $this->hasManyThrough(

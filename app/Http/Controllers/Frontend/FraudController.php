@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CreateFraudRequest;
+use App\Models\Phone;
 use App\Repositories\CardRepository;
 use App\Repositories\CommentRepository;
 use App\Repositories\PhoneRepository;
@@ -23,7 +24,8 @@ class FraudController extends Controller
      */
     public function index()
     {
-        return view('main.fraud.index');
+        $fraudsCount = Phone::count();
+        return view('main.fraud.index', compact('fraudsCount'));
     }
 
     public function store(CreateFraudRequest $request)
@@ -50,5 +52,13 @@ class FraudController extends Controller
         }
 
         return response()->json(['Fraud created successfully'], 200);
+    }
+
+    public function search()
+    {
+        request()->validate(['phone' => 'required|string|min:10|max:10']);
+        $phone = request()->phone;
+        $frauds = Phone::with('comments.cards')->where('number', 'like', "%$phone%")->get();
+        return response()->json($frauds, 200);
     }
 }

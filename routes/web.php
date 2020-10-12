@@ -22,6 +22,7 @@ Route::get('/rules', [App\Http\Controllers\Frontend\MainController::class, 'rule
 
 Route::get('/frauds', [App\Http\Controllers\Frontend\FraudController::class, 'index'])->name('fraud.index');
 Route::group(['middleware' => 'auth'], function () {
+    Route::get('/frauds/search', [App\Http\Controllers\Frontend\FraudController::class, 'search'])->name('fraud.search');
     Route::get('/frauds/create', [App\Http\Controllers\Frontend\FraudController::class, 'create'])->name('fraud.create');
     Route::post('/frauds/store', [App\Http\Controllers\Frontend\FraudController::class, 'store'])->name('fraud.store');
 });

@@ -73,4 +73,9 @@ class Comment extends Model
     {
         return $this->belongsTo(\App\Models\Phone::class, 'phone_id', 'id');
     }
+
+    public function cards()
+    {
+        return $this->hasMany(\App\Models\Card::class, 'comment_id', 'id');
+    }
 }
