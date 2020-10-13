@@ -9,6 +9,7 @@
 
     <!-- Fonts -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    @stack('styles')
 
     <link rel="icon" type="image/png" href="{{asset('images/favicon.ico')}}"/>
 </head>

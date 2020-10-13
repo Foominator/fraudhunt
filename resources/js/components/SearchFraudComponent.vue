@@ -48,52 +48,51 @@
                     </span>
                 </h1>
 
-                <div class="row rounded border border-dark mb-4 bg-dark text-white">
-                    <div class="col-md-1">
-                        {{firstComment.date}}
-                    </div>
-                    <div class="col-md-8">
-                        {{firstComment.description}}
-                    </div>
-                    <div class="col-md-2">
-                        <span v-for="card in firstComment.cards">
-                                    {{card.card_num}}
-                                </span>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="blog-comment">
+                            <ul class="comments">
+
+                                <li class="clearfix">
+                                    <div class="post-comments bg-dark">
+                                        <p class="meta text-white">{{firstComment.date}} Был добавлен мошенник с номером
+                                            - {{firstComment.phone.number}}
+                                        </p>
+                                        <p class="text-secondary">
+                                            {{firstComment.description}}
+                                        </p>
+                                        <p class="meta"></p>
+                                        <div v-if="firstComment.cards.length">Добавлены карты мошшеника:</div>
+                                        <div v-for="card in firstComment.cards">
+                                            <b>{{card.card_num}} </b>
+                                        </div>
+                                    </div>
+                                </li>
+
+                                <li class="clearfix" v-for="comment in comments">
+                                    <div class="post-comments">
+                                        <p class="meta">{{comment.date}} <a href="#">JohnDoe</a> says : <i
+                                            class="pull-right"><a href="#"><small>Reply</small></a></i>
+
+                                            <span class="float-right" v-if="comment.status_int > 0">Считает, что {{firstComment.phone.number}} - Мошшеник</span>
+                                            <span class="float-right" v-if="comment.status_int < 0">Считает, что {{firstComment.phone.number}} - НЕ Мошшеник</span>
+                                        </p>
+
+                                        <p>
+                                            {{comment.description}}
+                                        </p>
+                                        <p class="meta"></p>
+                                        <div v-if="comment.cards.length">Добавлены карты мошшеника:</div>
+                                        <div v-for="card in comment.cards">
+                                            <b>{{card.card_num}} </b>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
 
-                <div class="row text-center">
-                    <div class="col-md-1">
-                        Дата
-                    </div>
-                    <div class="col-md-8">
-                        Комментарий
-                    </div>
-                    <div class="col-md-2">
-                        Карты
-                    </div>
-                    <div class="col-md-1">
-                        Мошенник
-                    </div>
-                </div>
-
-                <div class="row border rounded mt-2" v-for="comment in comments">
-                    <div class="col-md-1 text-right border small">
-                        {{comment.date}}
-                    </div>
-                    <div class="col-md-8 text-left">
-                        {{comment.description}}
-                    </div>
-                    <div class="col-md-2 text-center">
-                            <span v-for="card in comment.cards">
-                                    {{card.card_num}}
-                                </span>
-                    </div>
-                    <div class="col-md-1 text-center align-middle">
-                        <span v-if="comment.status === 'approved'"><i class="fa fa-plus"></i></span>
-                        <span v-if="comment.status === 'declined'"><i class="fa fa-minus"></i></span>
-                    </div>
-                </div>
                 <button class="btn btn-secondary mt-2" v-if="currentPage < maxPage" @click="loadPage">Показать еще
                 </button>
                 <h3 class="mt-4">Добавить комментарий</h3>
@@ -106,22 +105,24 @@
 
                 </div>
 
-                <div class="input-group mb-3 mt-4" v-for="i in fraudCardsCount">
-                    <div class="input-group-prepend">
-                        <span class="input-group-text bg-dark text-white">Карта № {{i}}</span>
+                <div v-if="commentStatus">
+                    <div class="input-group mb-3 mt-4" v-for="i in fraudCardsCount">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text bg-dark text-white">Карта № {{i}}</span>
+                        </div>
+                        <input type="text" v-model="fraudCards[i-1]" class="form-control" maxlength="16"
+                               minlength="16"
+                               placeholder="0000000000000000">
+                        <div class="input-group-append pointer" @click="deleteCard(i-1)">
+                            <span class="input-group-text"><i class="fa fa-times"></i></span>
+                        </div>
                     </div>
-                    <input type="text" v-model="fraudCards[i-1]" class="form-control" maxlength="16"
-                           minlength="16"
-                           placeholder="0000000000000000">
-                    <div class="input-group-append pointer" @click="deleteCard(i-1)">
-                        <span class="input-group-text"><i class="fa fa-times"></i></span>
-                    </div>
-                </div>
 
-                <div class="form-group">
+                    <div class="form-group">
                         <span class="text-secondary pointer" @click="addCard()" v-if="fraudCardsCount < 3">
                             Добавить еще карту <i class="fa fa-plus"></i>
                         </span>
+                    </div>
                 </div>
 
                 <div class="form-check">
@@ -190,6 +191,7 @@
                     this.commentStatus = 'declined' !== data.last_comment_status;
                     this.calculateSearchResults();
                 }).catch(error => {
+                    console.log(error);
                     if (404 === error.response.status) {
                         this.showResult = true;
                     }
@@ -219,9 +221,29 @@
                 this.firstComment.date = ("0" + date.getDate()).slice(-2) + '.' + ("0" + (date.getMonth() + 1)).slice(-2) + '.' + date.getFullYear();
 
                 this.comments = this.comments.sort((b, a) => (a.created_at > b.created_at) ? 1 : ((b.created_at > a.created_at) ? -1 : 0));
-                for (var j in this.comments) {
+                for (let j in this.comments) {
                     var mydate = new Date(this.comments[j].created_at);
                     this.comments[j].date = ("0" + mydate.getDate()).slice(-2) + '.' + ("0" + (mydate.getMonth() + 1)).slice(-2) + '.' + mydate.getFullYear();
+
+                    for (let k in this.comments[j].cards) {
+                        this.comments[j].cards[k].card_num = this.formatCreditCard(this.comments[j].cards[k].card_num);
+                    }
+                }
+            },
+            formatCreditCard(value) {
+                let v = value.replace(/\s+/g, '').replace(/[^0-9]/gi, '');
+                let matches = v.match(/\d{4,16}/g);
+                let match = matches && matches[0] || '';
+                let parts = [];
+
+                for (let i = 0, len = match.length; i < len; i += 4) {
+                    parts.push(match.substring(i, i + 4));
+                }
+
+                if (parts.length) {
+                    return parts.join(' ');
+                } else {
+                    return value;
                 }
             },
             showErrors(errors) {
