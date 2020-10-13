@@ -43,7 +43,7 @@
                     Результат поиска. <span
                     class="text-secondary">Телефон - {{firstComment.phone.number}} </span>
                     <span class="float-right"
-                          v-bind:class="{ 'text-danger': this.fraudPercent > 50 ,'text-success': this.fraudPercent < 50 }">
+                          v-bind:class="{ 'text-danger': this.fraudPercent > 40 ,'text-success': this.fraudPercent <= 40 }">
                     Мошенник {{this.fraudPercent}}%
                     </span>
                 </h1>
@@ -76,9 +76,7 @@
                                 </span>
                         </div>
                         <div class="col-md-1 text-center">
-                            <span v-if="firstComment.status === 'approved'"><i class="fa fa-plus"></i></span>
-                            <span v-if="firstComment.status === 'declined'"><i
-                                class="fa fa-minus"></i></span>
+                            <span><i class="fa fa-plus"></i></span>
                         </div>
                     </div>
                 </div>
