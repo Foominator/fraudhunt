@@ -44,6 +44,7 @@ class FraudController extends Controller
             $comment = Comment::create([
                 'description' => $request->comment,
                 'status' => Comment::APPROVED_STATUS,
+                'status_int' => 1,
                 'author_id' => auth()->user()->id,
                 'phone_id' => $phone->id,
             ]);
@@ -107,9 +108,23 @@ class FraudController extends Controller
             response()->json(['Not Found'], 404);
         }
 
+        //Auth user last comment
+        $lastComment = Comment::where('phone_id', $phone->id)
+            ->where('author_id', auth()->user()->id)
+            ->orderBy('created_at', 'desc')
+            ->first();
+        $statusInt = 0;
+        if (!$lastComment) {
+            $statusInt = $request->status === Comment::APPROVED_STATUS ? 1 : -1;
+        }
+        if ($lastComment && $request->status !== $lastComment->status) {
+            $statusInt = $request->status === Comment::APPROVED_STATUS ? 2 : -2;
+        }
+
         $comment = Comment::create([
             'description' => $request->comment,
             'status' => $request->status,
+            'status_int' => $statusInt,
             'author_id' => auth()->user()->id,
             'phone_id' => $phone->id,
         ]);

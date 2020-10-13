@@ -34,6 +34,7 @@ class Comment extends Model
     public $fillable = [
         'description',
         'status',
+        'status_int',
         'author_id',
         'phone_id'
     ];
@@ -45,6 +46,7 @@ class Comment extends Model
      */
     protected $casts = [
         'id' => 'integer',
+        'status_int' => 'integer',
         'description' => 'string',
         'status' => 'string',
         'author_id' => 'integer',

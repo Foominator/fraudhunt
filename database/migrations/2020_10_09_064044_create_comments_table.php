@@ -18,6 +18,7 @@ class CreateCommentsTable extends Migration
             $table->bigInteger('id', true, true);
             $table->text('description');
             $table->enum('status', ['approved', 'declined', 'neutral']);
+            $table->integer('status_int');
             $table->foreignId('author_id')->constrained('users')->onDelete('cascade');;
             $table->foreignId('phone_id')->constrained('phones')->onDelete('cascade');;
             $table->timestamps();
