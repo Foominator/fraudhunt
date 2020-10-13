@@ -67,7 +67,7 @@
                                             {{firstComment.description}}
                                         </p>
                                         <p class="meta"></p>
-                                        <div v-if="firstComment.cards.length">Добавлены карты мошшеника:</div>
+                                        <div v-if="firstComment.cards.length">Добавлены карты мошенника:</div>
                                         <div v-for="card in firstComment.cards">
                                             <b>{{card.card_num}} </b>
                                         </div>
@@ -78,15 +78,15 @@
                                     <div class="post-comments">
                                         <p class="meta">{{comment.date}} <a href="#">{{comment.author.name}}</a>
 
-                                            <span class="float-right" v-if="comment.status_int > 0">Считает, что {{firstComment.phone.number}} - Мошшеник</span>
-                                            <span class="float-right" v-if="comment.status_int < 0">Считает, что {{firstComment.phone.number}} - НЕ Мошшеник</span>
+                                            <span class="float-right" v-if="comment.status_int > 0">Считает, что {{firstComment.phone.number}} - <b>Мошенник</b></span>
+                                            <span class="float-right" v-if="comment.status_int < 0">Считает, что {{firstComment.phone.number}} - <b>НЕ Мошенник</b></span>
                                         </p>
 
                                         <p>
                                             {{comment.description}}
                                         </p>
                                         <p v-if="comment.cards.length" class="meta"></p>
-                                        <div v-if="comment.cards.length">Добавлены карты мошшеника:</div>
+                                        <div v-if="comment.cards.length">Добавлены карты мошенника:</div>
                                         <div v-for="card in comment.cards">
                                             <b>{{card.card_num}} </b>
                                         </div>
