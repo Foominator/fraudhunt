@@ -3,7 +3,7 @@
         <thead>
         <tr>
             <th>Card Num</th>
-            <th>Comment</th>
+            <th style="width: 70%">Comment</th>
             <th colspan="3">Action</th>
         </tr>
         </thead>
@@ -11,7 +11,7 @@
         @foreach($cards as $card)
             <tr>
                 <td>{{ $card->card_num }}</td>
-                <td>{{ substr($card->comment->description, 0, 30) }}...</td>
+                <td>{{ $card->comment->description }}</td>
                 <td>
                     {!! Form::open(['route' => ['cards.destroy', $card->id], 'method' => 'delete']) !!}
                     <div class='btn-group'>

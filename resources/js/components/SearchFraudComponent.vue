@@ -73,33 +73,12 @@
                                         </div>
                                     </div>
                                 </li>
-
-                                <li class="clearfix" v-for="comment in comments">
-                                    <div class="post-comments">
-                                        <p class="meta">{{comment.date}} <a href="#">{{comment.author.name}}</a>
-
-                                            <span class="float-right" v-if="comment.status_int > 0">Считает, что {{firstComment.phone.number}} - <b>Мошенник</b></span>
-                                            <span class="float-right" v-if="comment.status_int < 0">Считает, что {{firstComment.phone.number}} - <b>НЕ Мошенник</b></span>
-                                        </p>
-
-                                        <p>
-                                            {{comment.description}}
-                                        </p>
-                                        <p v-if="comment.cards.length" class="meta"></p>
-                                        <div v-if="comment.cards.length">Добавлены карты мошенника:</div>
-                                        <div v-for="card in comment.cards">
-                                            <b><i class="fa fa-credit-card"></i> {{card.card_num}} </b>
-                                        </div>
-                                    </div>
-                                </li>
                             </ul>
                         </div>
                     </div>
                 </div>
 
-                <button class="btn btn-secondary" v-if="currentPage < maxPage" @click="loadPage">Показать еще
-                </button>
-                <h3 class="mt-4">Добавить комментарий</h3>
+                <h3 class="mt-2">Добавить комментарий</h3>
 
                 <div v-if="!auth_check" class="mb-4">
                     <a :href="routes['login']">Войдите в систему</a>, чтобы добавить комментарий
@@ -144,6 +123,39 @@
                         </button>
                     </div>
                 </div>
+
+                <h3 class="mt-4" v-if="comments.length">Последние комментарии</h3>
+
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="blog-comment">
+                            <ul class="comments">
+                                <li class="clearfix" v-for="comment in comments">
+                                    <div class="post-comments">
+                                        <p class="meta">{{comment.date}} <a href="#">{{comment.author.name}}</a>
+
+                                            <span class="float-right" v-if="comment.status_int > 0">Считает, что {{firstComment.phone.number}} - <b>Мошенник</b></span>
+                                            <span class="float-right" v-if="comment.status_int < 0">Считает, что {{firstComment.phone.number}} - <b>НЕ Мошенник</b></span>
+                                        </p>
+
+                                        <p>
+                                            {{comment.description}}
+                                        </p>
+                                        <p v-if="comment.cards.length" class="meta"></p>
+                                        <div v-if="comment.cards.length">Добавлены карты мошенника:</div>
+                                        <div v-for="card in comment.cards">
+                                            <b><i class="fa fa-credit-card"></i> {{card.card_num}} </b>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <button class="btn btn-secondary" v-if="currentPage < maxPage" @click="loadPage">Показать еще
+                </button>
             </div>
         </div>
     </div>
