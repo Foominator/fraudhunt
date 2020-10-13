@@ -54,13 +54,12 @@ class CommentSeeder extends Seeder
                 $statusInt = $generatedComment->status === Comment::APPROVED_STATUS ? 2 : -2;
             }
 
+            if (0 === $statusInt) {
+                $generatedComment->status = Comment::NEUTRAL_STATUS;
+            }
+
             $generatedComment->status_int = $statusInt;
             $generatedComment->save();
-
-            Comment::where('author_id', $generatedComment->author_id)
-                ->where('phone_id', $generatedComment->phone_id)
-                ->where('id', '!=', $generatedComment->id)
-                ->update(['status' => Comment::NEUTRAL_STATUS]);
         }
     }
 }

@@ -73,10 +73,10 @@ class FraudController extends Controller
         }
 
         //Fraud creator
-        $firstComment = Comment::with('phone', 'cards')->where('phone_id', $phone->id)
+        $firstComment = Comment::with('phone', 'cards', 'author')->where('phone_id', $phone->id)
             ->orderBy('created_at', 'asc')->first();
 
-        $comments = Comment::with('phone', 'cards')->where('phone_id', $phone->id)
+        $comments = Comment::with('phone', 'cards', 'author')->where('phone_id', $phone->id)
             ->orderBy('created_at', 'desc')->where('id', '!=', $firstComment->id)->paginate(10);
 
         // Fraud Percent logic
@@ -125,7 +125,8 @@ class FraudController extends Controller
         if (!$lastComment) {
             $statusInt = $request->status === Comment::APPROVED_STATUS ? 1 : -1;
         }
-        if ($lastComment && $request->status !== $lastComment->status) {
+        $lastStatus = $lastComment->status_int > 0 ? Comment::APPROVED_STATUS : Comment::DECLINED_STATUS;
+        if ($lastComment && $request->status !== $lastStatus) {
             $statusInt = $request->status === Comment::APPROVED_STATUS ? 2 : -2;
         }
 
@@ -143,11 +144,6 @@ class FraudController extends Controller
                 'comment_id' => $comment->id,
             ]);
         }
-
-        Comment::where('author_id', auth()->user()->id)
-            ->where('phone_id', $phone->id)
-            ->where('id', '!=', $comment->id)
-            ->update(['status' => Comment::NEUTRAL_STATUS]);
 
         return response()->json([
             'Comment created successfully'
