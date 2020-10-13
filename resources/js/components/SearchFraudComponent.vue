@@ -54,9 +54,8 @@
                             <ul class="comments">
 
                                 <li class="clearfix">
-                                    <div class="post-comments bg-dark">
-                                        <p class="meta text-white">{{firstComment.date}} Был добавлен мошенник с номером
-                                            - {{firstComment.phone.number}}
+                                    <div class="post-comments border-dark border">
+                                        <p class="meta">{{firstComment.date}} <a href="#">{{firstComment.author.name}}</a>
                                         </p>
                                         <p class="text-secondary">
                                             {{firstComment.description}}
@@ -71,8 +70,7 @@
 
                                 <li class="clearfix" v-for="comment in comments">
                                     <div class="post-comments">
-                                        <p class="meta">{{comment.date}} <a href="#">JohnDoe</a> says : <i
-                                            class="pull-right"><a href="#"><small>Reply</small></a></i>
+                                        <p class="meta">{{comment.date}} <a href="#">{{comment.author.name}}</a>
 
                                             <span class="float-right" v-if="comment.status_int > 0">Считает, что {{firstComment.phone.number}} - Мошшеник</span>
                                             <span class="float-right" v-if="comment.status_int < 0">Считает, что {{firstComment.phone.number}} - НЕ Мошшеник</span>
@@ -224,9 +222,14 @@
                 }
             },
             calculateSearchResults() {
+                //first comment logic
                 var date = new Date(this.firstComment.created_at);
                 this.firstComment.date = ("0" + date.getDate()).slice(-2) + '.' + ("0" + (date.getMonth() + 1)).slice(-2) + '.' + date.getFullYear();
+                for (let k in this.firstComment.cards) {
+                    this.firstComment.cards[k].card_num = this.formatCreditCard(this.firstComment.cards[k].card_num);
+                }
 
+                //ALL comments logic
                 this.comments = this.comments.sort((b, a) => (a.created_at > b.created_at) ? 1 : ((b.created_at > a.created_at) ? -1 : 0));
                 for (let j in this.comments) {
                     var mydate = new Date(this.comments[j].created_at);
