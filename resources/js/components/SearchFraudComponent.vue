@@ -48,39 +48,34 @@
                     </span>
                 </h1>
 
-                <div class="">
-                    <div class="row rounded border-top border-left border-right border-dark text-center">
-                        <div class="col-md-1">
-                            Дата
-                        </div>
-                        <div class="col-md-8">
-                            Комментарий
-                        </div>
-                        <div class="col-md-2">
-                            Карты
-                        </div>
-                        <div class="col-md-1">
-                            Мошенник
-                        </div>
+                <div class="row rounded border border-dark mb-4 bg-dark text-white">
+                    <div class="col-md-1">
+                        {{firstComment.date}}
                     </div>
-                    <div class="row rounded border-bottom border-left border-right border-dark">
-                        <div class="col-md-1">
-                            {{firstComment.date}}
-                        </div>
-                        <div class="col-md-8">
-                            {{firstComment.description}}
-                        </div>
-                        <div class="col-md-2">
+                    <div class="col-md-8">
+                        {{firstComment.description}}
+                    </div>
+                    <div class="col-md-2">
                         <span v-for="card in firstComment.cards">
                                     {{card.card_num}}
                                 </span>
-                        </div>
-                        <div class="col-md-1 text-center">
-                            <span><i class="fa fa-plus"></i></span>
-                        </div>
                     </div>
                 </div>
-                <br>
+
+                <div class="row text-center">
+                    <div class="col-md-1">
+                        Дата
+                    </div>
+                    <div class="col-md-8">
+                        Комментарий
+                    </div>
+                    <div class="col-md-2">
+                        Карты
+                    </div>
+                    <div class="col-md-1">
+                        Мошенник
+                    </div>
+                </div>
 
                 <div class="row border rounded mt-2" v-for="comment in comments">
                     <div class="col-md-1 text-right border small">
