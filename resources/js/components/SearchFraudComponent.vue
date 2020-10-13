@@ -69,7 +69,7 @@
                                         <p class="meta"></p>
                                         <div v-if="firstComment.cards.length">Добавлены карты мошенника:</div>
                                         <div v-for="card in firstComment.cards">
-                                            <b>{{card.card_num}} </b>
+                                            <b><i class="fa fa-credit-card"></i> {{card.card_num}} </b>
                                         </div>
                                     </div>
                                 </li>
@@ -88,7 +88,7 @@
                                         <p v-if="comment.cards.length" class="meta"></p>
                                         <div v-if="comment.cards.length">Добавлены карты мошенника:</div>
                                         <div v-for="card in comment.cards">
-                                            <b>{{card.card_num}} </b>
+                                            <b><i class="fa fa-credit-card"></i> {{card.card_num}} </b>
                                         </div>
                                     </div>
                                 </li>

@@ -95,11 +95,13 @@ class FraudController extends Controller
         $fraudPercent = round($fraudApprovedCount / $frauds->count() * 1000) / 10;
 
         //Auth user last comment
-        $lastComment = auth()->check() && Comment::whereHas('phone', function (Builder $query) use ($phone) {
-                $query->where('number', '=', $phone);
-            })->where('author_id', auth()->user()->id)
+        $lastComment = null;
+        if (auth()->check()) {
+            $lastComment = Comment::where('phone_id', $phone->id)
+                ->where('author_id', auth()->user()->id)
                 ->orderBy('created_at', 'desc')
                 ->first();
+        }
         return response()->json([
             'first_comment' => $firstComment,
             'comments' => $comments,
@@ -124,10 +126,11 @@ class FraudController extends Controller
         $statusInt = 0;
         if (!$lastComment) {
             $statusInt = $request->status === Comment::APPROVED_STATUS ? 1 : -1;
-        }
-        $lastStatus = $lastComment->status_int > 0 ? Comment::APPROVED_STATUS : Comment::DECLINED_STATUS;
-        if ($lastComment && $request->status !== $lastStatus) {
-            $statusInt = $request->status === Comment::APPROVED_STATUS ? 2 : -2;
+        } else {
+            $lastStatus = $lastComment->status_int > 0 ? Comment::APPROVED_STATUS : Comment::DECLINED_STATUS;
+            if ($request->status !== $lastStatus) {
+                $statusInt = $request->status === Comment::APPROVED_STATUS ? 2 : -2;
+            }
         }
 
         $comment = Comment::create([
