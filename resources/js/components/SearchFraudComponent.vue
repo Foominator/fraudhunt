@@ -194,7 +194,7 @@
                     this.comments = data.comments.data;
                     this.maxPage = data.comments.last_page;
                     this.fraudPercent = data.fraud_percent;
-                    this.commentStatus = 'approved' === data.last_comment_status;
+                    this.commentStatus = 'declined' !== data.last_comment_status;
                     this.calculateSearchResults();
                 }).catch(error => {
                     if (404 === error.response.status) {

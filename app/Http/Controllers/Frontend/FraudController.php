@@ -96,7 +96,7 @@ class FraudController extends Controller
             'first_comment' => $firstComment,
             'comments' => $comments,
             'fraud_percent' => $fraudPercent,
-            'last_comment_status' => $lastComment->status,
+            'last_comment_status' => $lastComment->status ?? null,
         ], 200);
     }
 
