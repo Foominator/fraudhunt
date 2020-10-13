@@ -16,18 +16,23 @@
 
                 <div class="fraud-search">
                     <div class="form-group field-fraudsearch-phone">
-                        <label class="control-label">Для поиска введите полный номер
-                            телефона (10 цифр начиная с "0")</label>
-                        <input type="text" v-model="searchPhone" class="form-control"
-                               maxlength="10" minlength="10" placeholder="0930000000">
+
+                        <div class="input-group mb-3">
+                            <input type="text" v-model="searchPhone" class="form-control"
+                                   maxlength="10" minlength="10" placeholder="0930000000">
+                            <div class="input-group-append">
+                                <button class="btn btn-primary" type="button" @click="search()">Поиск</button>
+                            </div>
+                        </div>
+                        <small class="form-text text-muted">Для поиска введите полный номер
+                            телефона (10 цифр начиная с "0")</small>
 
                         <div class="help-block"></div>
                     </div>
-                    <div class="form-group">
-                        <button type="button" class="btn btn-primary" @click="search()">Поиск</button>
-                        <button type="reset" class="btn btn-secondary" @click="resetSearch()">Сброс</button>
-                    </div>
                 </div>
+            </div>
+            <div class="col-lg-3">
+                <button type="reset" class="btn btn-secondary" @click="resetSearch()">Сброс</button>
             </div>
         </div>
 
@@ -55,7 +60,8 @@
 
                                 <li class="clearfix">
                                     <div class="post-comments border-dark border">
-                                        <p class="meta">{{firstComment.date}} <a href="#">{{firstComment.author.name}}</a>
+                                        <p class="meta">{{firstComment.date}} <a
+                                            href="#">{{firstComment.author.name}}</a>
                                         </p>
                                         <p class="text-secondary">
                                             {{firstComment.description}}
@@ -269,6 +275,7 @@
                 }, 3000);
             },
             resetSearch() {
+                this.searchPhone = '';
                 this.showResult = false;
                 this.comments = [];
                 this.firstComment = [];
