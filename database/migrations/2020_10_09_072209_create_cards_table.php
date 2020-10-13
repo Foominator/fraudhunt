@@ -17,7 +17,7 @@ class CreateCardsTable extends Migration
         Schema::create('cards', function (Blueprint $table) {
             $table->bigInteger('id', true, true);
             $table->string('card_num', 50);
-            $table->foreignId('comment_id')->constrained('comments');
+            $table->foreignId('comment_id')->constrained('comments')->onDelete('cascade');;
 
             $table->timestamps();
             $table->softDeletes();
