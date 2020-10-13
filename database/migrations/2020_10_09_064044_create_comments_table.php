@@ -17,7 +17,7 @@ class CreateCommentsTable extends Migration
         Schema::create('comments', function (Blueprint $table) {
             $table->bigInteger('id', true, true);
             $table->text('description');
-            $table->enum('status', ['approved','declined']);
+            $table->enum('status', ['approved', 'declined', 'neutral']);
             $table->foreignId('author_id')->constrained('users');
             $table->foreignId('phone_id')->constrained('phones');
             $table->timestamps();

@@ -22,6 +22,11 @@ class Comment extends Model
 {
     use SoftDeletes, HasFactory;
 
+    //'approved', 'declined', 'neutral'
+    public const APPROVED_STATUS = 'approved';
+    public const DECLINED_STATUS = 'declined';
+    public const NEUTRAL_STATUS = 'neutral';
+
     public $table = 'comments';
 
     protected $dates = ['deleted_at'];
@@ -53,7 +58,7 @@ class Comment extends Model
      */
     public static $rules = [
         'description' => 'required|string',
-        'status' => 'required|in:approved,declined',
+        'status' => 'required|in:approved,declined,neutral',
         'created_at' => 'nullable|nullable',
         'updated_at' => 'nullable|nullable'
     ];

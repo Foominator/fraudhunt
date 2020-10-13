@@ -14,6 +14,6 @@ class PhoneSeeder extends Seeder
      */
     public function run()
     {
-        Phone::factory(5)->create();
+        Phone::factory(3)->create();
     }
 }

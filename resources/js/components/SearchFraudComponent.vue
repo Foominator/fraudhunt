@@ -7,6 +7,9 @@
             {{error}}
         </div>
 
+        <div class="alert alert-primary" role="alert" v-for="message in messages">
+            {{message}}
+        </div>
 
         <div class="row">
             <div class="col-lg-3">
@@ -123,11 +126,10 @@
                 </div>
 
                 <div class="form-group">
-                    <button type="button" class="btn btn-primary" @click="addCard()" v-if="fraudCardsCount < 3">
-                        Добавить карту <i class="fa fa-plus"></i>
-                    </button>
+                        <span class="text-secondary pointer" @click="addCard()" v-if="fraudCardsCount < 3">
+                            Добавить еще карту <i class="fa fa-plus"></i>
+                        </span>
                 </div>
-
 
                 <div class="form-check">
                     <input type="checkbox" v-model="commentStatus" class="form-check-input" checked>
@@ -135,7 +137,7 @@
                 </div>
 
                 <div class="form-group mt-1">
-                    <button type="button" class="btn btn-success">Добавить комментарий</button>
+                    <button type="button" class="btn btn-success" @click="createComment()">Добавить комментарий</button>
                 </div>
             </div>
         </div>
@@ -149,6 +151,7 @@
         data() {
             return {
                 errors: [],
+                messages: [],
                 showResult: false,
                 searchPhone: '',
                 searchResults: [],
@@ -187,15 +190,16 @@
                 this.currentPage = 1;
                 window.axios.get(this.routes['fraud.search'], {params: {phone: this.searchPhone}}).then(({data}) => {
                     this.showResult = true;
-                    if (data.first_comment.id !== undefined) {
-                        this.firstComment = data.first_comment;
-                        this.comments = data.comments.data;
-                        this.maxPage = data.comments.last_page;
-                        this.fraudPercent = data.fraud_percent;
-                        this.calculateSearchResults();
-                    }
+                    this.firstComment = data.first_comment;
+                    this.comments = data.comments.data;
+                    this.maxPage = data.comments.last_page;
+                    this.fraudPercent = data.fraud_percent;
+                    this.commentStatus = 'approved' === data.last_comment_status;
+                    this.calculateSearchResults();
                 }).catch(error => {
-                    console.log(error);
+                    if (404 === error.response.status) {
+                        this.showResult = true;
+                    }
                     if (422 === error.response.status) {
                         this.showErrors(error.response.data.errors);
                     }
@@ -233,11 +237,40 @@
                     this.errors = [];
                 }, 3000);
             },
+            showMessages(messages) {
+                this.messages = messages;
+                setTimeout(() => {
+                    this.messages = [];
+                }, 3000);
+            },
             resetSearch() {
                 this.showResult = false;
                 this.comments = [];
                 this.firstComment = [];
                 this.currentPage = 1;
+            },
+            createComment() {
+                let status = 'declined';
+                if (this.commentStatus) {
+                    status = 'approved';
+                }
+
+                const params = {
+                    phone_id: this.firstComment.phone.id,
+                    comment: this.commentText,
+                    cards: this.fraudCards,
+                    status: status,
+                };
+
+                window.axios.post(this.routes['fraud.comment'], params).then(({data}) => {
+                    this.showMessages(data);
+                    this.commentText = '';
+                    this.fraudCards = [];
+                    this.search();
+                    window.scrollTo(0, 0);
+                }).catch(error => {
+                    this.showErrors(error.response.data.errors);
+                });
             }
         }
     }
