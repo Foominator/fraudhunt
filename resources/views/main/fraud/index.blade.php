@@ -4,7 +4,11 @@
 
 @section('content')
     <div class="container pt-4">
-        <search-fraud :frauds_count="{{$fraudsCount}}" :routes="{{json_encode($routes)}}"></search-fraud>
+        <search-fraud
+            :frauds_count="{{$fraudsCount}}"
+            :auth_check="{{json_encode(auth()->check())}}"
+            :routes="{{json_encode($routes)}}">
+        </search-fraud>
     </div>
 @endsection
 @push('styles')

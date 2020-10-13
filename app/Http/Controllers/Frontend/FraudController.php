@@ -67,32 +67,39 @@ class FraudController extends Controller
     {
         request()->validate(['phone' => 'required|string|min:10|max:10']);
         $phone = request()->phone;
-        //Fraud creator
-        $firstComment = Comment::with('phone', 'cards')->whereHas('phone', function (Builder $query) use ($phone) {
-            $query->where('number', '=', $phone);
-        })->orderBy('created_at', 'asc')->first();
-
-        if (!$firstComment) {
+        $phone = Phone::where('number', '=', $phone)->first();
+        if (!$phone) {
             return response()->json(['Not Found'], 404);
         }
 
-        $comments = Comment::with('phone', 'cards')->whereHas('phone', function (Builder $query) use ($phone) {
-            $query->where('number', '=', $phone);
-        })->orderBy('created_at', 'desc')->where('id', '!=', $firstComment->id)->paginate(10);
+        //Fraud creator
+        $firstComment = Comment::with('phone', 'cards')->where('phone_id', $phone->id)
+            ->orderBy('created_at', 'asc')->first();
+
+        $comments = Comment::with('phone', 'cards')->where('phone_id', $phone->id)
+            ->orderBy('created_at', 'desc')->where('id', '!=', $firstComment->id)->paginate(10);
 
         // Fraud Percent logic
-        $frauds = Comment::whereHas('phone', function (Builder $query) use ($phone) {
-            $query->where('number', '=', $phone);
-        })->whereIn('status', [Comment::APPROVED_STATUS, Comment::DECLINED_STATUS])->get(['author_id', 'status']);
-        $fraudApprovedCount = $frauds->where('status', Comment::APPROVED_STATUS)->groupBy('author_id')->count();
+        $frauds = Comment::where('phone_id', $phone->id)
+            ->get(['author_id', 'status_int'])->groupBy('author_id');
+        $fraudApprovedCount = 0;
+        foreach ($frauds as $userId => $commentStats) {
+            $statusInt = 0;
+            foreach ($commentStats as $commentStat) {
+                $statusInt += $commentStat->status_int;
+            }
+            if (0 < $statusInt) {
+                $fraudApprovedCount++;
+            }
+        }
         $fraudPercent = round($fraudApprovedCount / $frauds->count() * 1000) / 10;
 
         //Auth user last comment
-        $lastComment = Comment::whereHas('phone', function (Builder $query) use ($phone) {
-            $query->where('number', '=', $phone);
-        })->where('author_id', auth()->user()->id)
-            ->orderBy('created_at', 'desc')
-            ->first();
+        $lastComment = auth()->check() && Comment::whereHas('phone', function (Builder $query) use ($phone) {
+                $query->where('number', '=', $phone);
+            })->where('author_id', auth()->user()->id)
+                ->orderBy('created_at', 'desc')
+                ->first();
         return response()->json([
             'first_comment' => $firstComment,
             'comments' => $comments,
@@ -108,9 +115,10 @@ class FraudController extends Controller
             response()->json(['Not Found'], 404);
         }
 
-        //Auth user last comment
+        //Auth user last comment (with status)
         $lastComment = Comment::where('phone_id', $phone->id)
             ->where('author_id', auth()->user()->id)
+            ->where('status_int', '!=', 0)
             ->orderBy('created_at', 'desc')
             ->first();
         $statusInt = 0;
@@ -123,7 +131,7 @@ class FraudController extends Controller
 
         $comment = Comment::create([
             'description' => $request->comment,
-            'status' => $request->status,
+            'status' => 0 === $statusInt ? Comment::NEUTRAL_STATUS : $request->status,
             'status_int' => $statusInt,
             'author_id' => auth()->user()->id,
             'phone_id' => $phone->id,

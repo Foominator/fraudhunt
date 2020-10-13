@@ -81,7 +81,7 @@
                                         <p>
                                             {{comment.description}}
                                         </p>
-                                        <p class="meta"></p>
+                                        <p v-if="comment.cards.length" class="meta"></p>
                                         <div v-if="comment.cards.length">Добавлены карты мошшеника:</div>
                                         <div v-for="card in comment.cards">
                                             <b>{{card.card_num}} </b>
@@ -93,45 +93,52 @@
                     </div>
                 </div>
 
-                <button class="btn btn-secondary mt-2" v-if="currentPage < maxPage" @click="loadPage">Показать еще
+                <button class="btn btn-secondary" v-if="currentPage < maxPage" @click="loadPage">Показать еще
                 </button>
                 <h3 class="mt-4">Добавить комментарий</h3>
-                <div class="input-group">
+
+                <div v-if="!auth_check" class="mb-4">
+                    <a :href="routes['login']">Войдите в систему</a>, чтобы добавить комментарий
+                </div>
+
+                <div v-if="auth_check">
+                    <div class="input-group">
 
                             <textarea class="form-control"
                                       v-model="commentText"
                                       rows="6" placeholder="Опишите ситуацию..." required
                                       aria-label="With textarea"></textarea>
-
-                </div>
-
-                <div v-if="commentStatus">
-                    <div class="input-group mb-3 mt-4" v-for="i in fraudCardsCount">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text bg-dark text-white">Карта № {{i}}</span>
-                        </div>
-                        <input type="text" v-model="fraudCards[i-1]" class="form-control" maxlength="16"
-                               minlength="16"
-                               placeholder="0000000000000000">
-                        <div class="input-group-append pointer" @click="deleteCard(i-1)">
-                            <span class="input-group-text"><i class="fa fa-times"></i></span>
-                        </div>
                     </div>
 
-                    <div class="form-group">
+                    <div v-if="commentStatus">
+                        <div class="input-group mb-3 mt-4" v-for="i in fraudCardsCount">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text bg-dark text-white">Карта № {{i}}</span>
+                            </div>
+                            <input type="text" v-model="fraudCards[i-1]" class="form-control" maxlength="16"
+                                   minlength="16"
+                                   placeholder="0000000000000000">
+                            <div class="input-group-append pointer" @click="deleteCard(i-1)">
+                                <span class="input-group-text"><i class="fa fa-times"></i></span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
                         <span class="text-secondary pointer" @click="addCard()" v-if="fraudCardsCount < 3">
                             Добавить еще карту <i class="fa fa-plus"></i>
                         </span>
+                        </div>
                     </div>
-                </div>
 
-                <div class="form-check">
-                    <input type="checkbox" v-model="commentStatus" class="form-check-input" checked>
-                    <label class="form-check-label">Подтверждаю мошенничество</label>
-                </div>
+                    <div class="form-check">
+                        <input type="checkbox" v-model="commentStatus" class="form-check-input" checked>
+                        <label class="form-check-label">Подтверждаю мошенничество</label>
+                    </div>
 
-                <div class="form-group mt-1">
-                    <button type="button" class="btn btn-success" @click="createComment()">Добавить комментарий</button>
+                    <div class="form-group mt-1">
+                        <button type="button" class="btn btn-success" @click="createComment()">Добавить комментарий
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -141,7 +148,7 @@
 <script>
     export default {
         name: "SearchFraudComponent",
-        props: ["frauds_count", "routes"],
+        props: ["frauds_count", "routes", "auth_check"],
         data() {
             return {
                 errors: [],
