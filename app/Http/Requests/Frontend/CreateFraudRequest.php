@@ -29,7 +29,7 @@ class CreateFraudRequest extends FormRequest
             'phones' => 'array|required|min:1',
             'phones.*' => 'digits:10|required|unique:phones,number',
             'cards' => 'array',
-            'cards.*' => 'string|min:16|max:16',
+            'cards.*' => 'string|min:16|max:16|unique:cards,card_num',
         ];
     }
 }

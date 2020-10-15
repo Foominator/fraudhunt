@@ -18,8 +18,9 @@
                     <div class="form-group field-fraudsearch-phone">
 
                         <div class="input-group mb-3">
-                            <input type="text" v-model="searchPhone" class="form-control"
-                                   maxlength="10" minlength="10" placeholder="0930000000">
+                            <input class="form-control" @input="typePhone"
+                                   type="tel" v-mask="'+38(0##)-###-####'"
+                                   placeholder="+38(093)-00-0000">
                             <div class="input-group-append">
                                 <button class="btn btn-primary" type="button" @click="search()">Поиск</button>
                             </div>
@@ -93,23 +94,29 @@
                                       aria-label="With textarea"></textarea>
                     </div>
 
-                    <div v-if="commentStatus">
-                        <div class="input-group mb-3 mt-4" v-for="i in fraudCardsCount">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text bg-dark text-white">Карта № {{i}}</span>
+                    <div v-if="commentStatus" class="mb-2 mt-4">
+                        <div class="row">
+                            <div class="col-md-4" v-for="i in fraudCardsCount">
+                                <div class="input-group ">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text bg-dark text-white">Карта № {{i}}</span>
+                                    </div>
+                                    <input type="text" v-model="fraudCards[i-1]" class="form-control" maxlength="16"
+                                           minlength="16"
+                                           placeholder="0000000000000000">
+                                    <div class="input-group-append pointer" @click="deleteCard(i-1)">
+                                        <span class="input-group-text"><i class="fa fa-times"></i></span>
+                                    </div>
+                                </div>
                             </div>
-                            <input type="text" v-model="fraudCards[i-1]" class="form-control" maxlength="16"
-                                   minlength="16"
-                                   placeholder="0000000000000000">
-                            <div class="input-group-append pointer" @click="deleteCard(i-1)">
-                                <span class="input-group-text"><i class="fa fa-times"></i></span>
-                            </div>
-                        </div>
 
-                        <div class="form-group">
-                        <span class="text-secondary pointer" @click="addCard()" v-if="fraudCardsCount < 3">
-                            Добавить еще карту <i class="fa fa-plus"></i>
-                        </span>
+                            <div class="col-md-4" v-if="fraudCardsCount < 3">
+                                <div class="form-group">
+                                <div class="text-secondary pointer mt-2" @click="addCard()">
+                                    Добавить еще карту <i class="fa fa-plus"></i>
+                                </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
@@ -154,7 +161,7 @@
                     </div>
                 </div>
 
-                <button class="btn btn-secondary" v-if="currentPage < maxPage" @click="loadPage">Показать еще
+                <button class="btn btn-secondary mb-2" v-if="currentPage < maxPage" @click="loadPage">Показать еще
                 </button>
             </div>
         </div>
@@ -188,6 +195,10 @@
         mounted() {
         },
         methods: {
+            typePhone(event) {
+                let maskedPhone = event.target.value;
+                this.searchPhone = maskedPhone.replace('+38', '').replace(/\D/g, '');
+            },
             addCard() {
                 this.fraudCardsCount++;
             },

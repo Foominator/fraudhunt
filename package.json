@@ -25,6 +25,7 @@
     "dependencies": {
         "@fortawesome/fontawesome-free": "^5.15.1",
         "vue": "^2.6.12",
-        "vue-loader": "^15.9.3"
+        "vue-loader": "^15.9.3",
+        "vue-the-mask": "^0.11.1"
     }
 }
