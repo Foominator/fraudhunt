@@ -32,4 +32,21 @@ class CreateFraudRequest extends FormRequest
             'cards.*' => 'string|min:16|max:16|unique:cards,card_num',
         ];
     }
+
+    /**
+     * Get the error messages for the defined validation rules.
+     *
+     * @return array
+     */
+    public function messages()
+    {
+        return [
+            'digits' => 'Некорректный телефон',
+            'phones.*.unique' => 'Мошенник с таким номером уже был создан',
+
+            'cards.*.min' => 'Некорректная длинна банковской карты',
+            'cards.*.max' => 'Некорректная длинна банковской карты',
+            'cards.*.unique' => 'Банковская карта с таким номером уже была добавлена',
+        ];
+    }
 }

@@ -56,7 +56,7 @@ class FraudController extends Controller
             }
         }
 
-        return response()->json(['Fraud created successfully'], 200);
+        return response()->json(['Мошенник успешно добавлен'], 200);
     }
 
     /**
@@ -115,7 +115,7 @@ class FraudController extends Controller
         }
 
         return response()->json([
-            'Comment created successfully'
+            'Комментарий успешно добавлен'
         ], 200);
     }
 }

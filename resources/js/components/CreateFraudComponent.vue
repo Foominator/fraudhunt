@@ -7,14 +7,6 @@
             </div>
         </div>
 
-        <div class="alert alert-danger" role="alert" v-for="error in errors">
-            {{error}}
-        </div>
-
-        <div class="alert alert-primary" role="alert" v-for="message in messages">
-            {{message}}
-        </div>
-
         <div class="row">
             <div class="col-lg-6 offset-lg-3">
                 <form action="#" method="post" @submit="createFraud">
@@ -97,8 +89,16 @@
                         </span>
                     </div>
 
-                    <div class="form-group">
-                        <button type="submit" class="btn btn-success">Создать</button>
+                    <div class="row">
+                        <div class="col-md-2">
+                            <div class="form-group">
+                                <button type="submit" class="btn btn-success">Создать</button>
+                            </div>
+                        </div>
+                        <div class="col-md-10">
+                            <div class="text-danger pt-2" v-for="error in errors">{{error}}</div>
+                            <div class="text-success pt-2" v-for="message in messages">{{message}}</div>
+                        </div>
                     </div>
 
                 </form>
@@ -176,7 +176,8 @@
                     this.additionalPhones = [];
                 }).catch(error => {
                     if (422 === error.response.status) {
-                        this.showErrors(error.response.data.errors);
+                        let errors = Object.values(error.response.data.errors);
+                        this.showErrors([errors.pop().pop()]);
                     }
                 });
 

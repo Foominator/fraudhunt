@@ -3,14 +3,6 @@
 
         <h1>Сейчас в базе {{frauds_count}} записи(ей) о мошенниках</h1>
 
-        <div class="alert alert-danger" role="alert" v-for="error in errors">
-            {{error}}
-        </div>
-
-        <div class="alert alert-primary" role="alert" v-for="message in messages">
-            {{message}}
-        </div>
-
         <div class="row">
             <div class="col-lg-3">
 
@@ -88,10 +80,9 @@
 
                 <div v-if="auth_check">
                     <div class="input-group">
-
                             <textarea class="form-control"
                                       v-model="commentText"
-                                      rows="6" placeholder="Опишите ситуацию..." required
+                                      rows="4" placeholder="Опишите ситуацию..." required
                                       aria-label="With textarea"></textarea>
                     </div>
 
@@ -125,14 +116,23 @@
                         <label class="form-check-label">Подтверждаю мошенничество</label>
                     </div>
 
-                    <div class="form-group mt-1">
-                        <button type="button" class="btn btn-success" @click="createComment()">Добавить комментарий
-                        </button>
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <button type="button" class="btn btn-success" @click="createComment()">Добавить
+                                    комментарий
+                                </button>
+                            </div>
+                        </div>
+                        <div class="col-md-9">
+                            <div class="text-danger pt-2" v-for="error in errors">{{error}}</div>
+                            <div class="text-success pt-2" v-for="message in messages">{{message}}</div>
+                        </div>
                     </div>
+
                 </div>
 
                 <h3 class="mt-4" v-if="comments.length">Последние комментарии</h3>
-
 
                 <div class="row">
                     <div class="col-md-12">
@@ -338,7 +338,10 @@
                     this.search();
                     window.scrollTo(0, 0);
                 }).catch(error => {
-                    this.showErrors(error.response.data.errors);
+                    if (422 === error.response.status) {
+                        let errors = Object.values(error.response.data.errors);
+                        this.showErrors([errors.pop().pop()]);
+                    }
                 });
             }
         }

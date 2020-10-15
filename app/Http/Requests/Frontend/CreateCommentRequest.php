@@ -32,4 +32,18 @@ class CreateCommentRequest extends FormRequest
             'status' => 'required|string|in:approved,declined',
         ];
     }
+
+    /**
+     * Get the error messages for the defined validation rules.
+     *
+     * @return array
+     */
+    public function messages()
+    {
+        return [
+            'comment.required' => 'Поле «Описание» обязательное',
+            'cards.*.min' => 'Некорректная длинна банковской карты',
+            'cards.*.max' => 'Некорректная длинна банковской карты',
+        ];
+    }
 }
