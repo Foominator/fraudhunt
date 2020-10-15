@@ -8,18 +8,9 @@ use App\Http\Requests\Frontend\CreateFraudRequest;
 use App\Models\Card;
 use App\Models\Comment;
 use App\Models\Phone;
-use Illuminate\Database\Eloquent\Builder;
 
 class FraudController extends Controller
 {
-    /**
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
-     */
-    public function create()
-    {
-        return view('main.fraud.create');
-    }
-
     /**
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
@@ -27,6 +18,14 @@ class FraudController extends Controller
     {
         $fraudsCount = Phone::count();
         return view('main.fraud.index', compact('fraudsCount'));
+    }
+
+    /**
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+     */
+    public function create()
+    {
+        return view('main.fraud.create');
     }
 
     /**
@@ -66,46 +65,28 @@ class FraudController extends Controller
     public function search()
     {
         request()->validate(['phone' => 'required|string|min:10|max:10']);
-        $phone = request()->phone;
-        $phone = Phone::where('number', '=', $phone)->first();
+
+        $phone = Phone::with('comments')->where('number', '=', request()->phone)->first();
         if (!$phone) {
             return response()->json(['Not Found'], 404);
         }
 
-        //Fraud creator
-        $firstComment = Comment::with('phone', 'cards', 'author')->where('phone_id', $phone->id)
-            ->orderBy('created_at', 'asc')->first();
+        //Phone creator`s comment
+        $firstComment = $phone->comments->sortBy('created_at')->first()->load(['phone', 'cards', 'author']);
 
-        $comments = Comment::with('phone', 'cards', 'author')->where('phone_id', $phone->id)
-            ->orderBy('created_at', 'desc')->where('id', '!=', $firstComment->id)->paginate(10);
+        //Last phone comments
+        $comments = $phone->comments()->with(['phone', 'cards', 'author'])
+            ->where('id', '!=', $firstComment->id)->latest()->paginate(10);
 
-        // Fraud Percent logic
-        $frauds = Comment::where('phone_id', $phone->id)
-            ->get(['author_id', 'status_int'])->groupBy('author_id');
-        $fraudApprovedCount = 0;
-        foreach ($frauds as $userId => $commentStats) {
-            $statusInt = 0;
-            foreach ($commentStats as $commentStat) {
-                $statusInt += $commentStat->status_int;
-            }
-            if (0 < $statusInt) {
-                $fraudApprovedCount++;
-            }
-        }
-        $fraudPercent = round($fraudApprovedCount / $frauds->count() * 1000) / 10;
+        //Auth user`s last comment
+        $lastComment = !auth()->check() ? null : $phone->comments()
+            ->where('status', '!=', Comment::NEUTRAL_STATUS)
+            ->where('author_id', auth()->user()->id)->latest()->first();
 
-        //Auth user last comment
-        $lastComment = null;
-        if (auth()->check()) {
-            $lastComment = Comment::where('phone_id', $phone->id)
-                ->where('author_id', auth()->user()->id)
-                ->orderBy('created_at', 'desc')
-                ->first();
-        }
         return response()->json([
             'first_comment' => $firstComment,
             'comments' => $comments,
-            'fraud_percent' => $fraudPercent,
+            'fraud_percent' => $phone->getFraudPercent(),
             'last_comment_status' => $lastComment->status ?? null,
         ], 200);
     }
@@ -114,25 +95,10 @@ class FraudController extends Controller
     {
         $phone = Phone::find($request->phone_id);
         if (!$phone) {
-            response()->json(['Not Found'], 404);
+            return response()->json(['Not Found'], 404);
         }
 
-        //Auth user last comment (with status)
-        $lastComment = Comment::where('phone_id', $phone->id)
-            ->where('author_id', auth()->user()->id)
-            ->where('status_int', '!=', 0)
-            ->orderBy('created_at', 'desc')
-            ->first();
-        $statusInt = 0;
-        if (!$lastComment) {
-            $statusInt = $request->status === Comment::APPROVED_STATUS ? 1 : -1;
-        } else {
-            $lastStatus = $lastComment->status_int > 0 ? Comment::APPROVED_STATUS : Comment::DECLINED_STATUS;
-            if ($request->status !== $lastStatus) {
-                $statusInt = $request->status === Comment::APPROVED_STATUS ? 2 : -2;
-            }
-        }
-
+        $statusInt = $phone->getNewStatusInt($request->status, auth()->user()->id);
         $comment = Comment::create([
             'description' => $request->comment,
             'status' => 0 === $statusInt ? Comment::NEUTRAL_STATUS : $request->status,

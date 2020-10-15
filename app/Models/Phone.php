@@ -74,4 +74,40 @@ class Phone extends Model
             'id' // Local key on comments table...
         );
     }
+
+    public function getFraudPercent(): float
+    {
+        $comments = $this->comments()->get(['author_id', 'status_int'])
+            ->groupBy('author_id'); // 1 user - 1 vote
+        if (!$comments->count()) {
+            return 0;
+        }
+
+        $fraudApprovedCount = 0;
+        foreach ($comments as $userId => $userComments) {
+            if (0 < $userComments->sum('status_int')) {
+                $fraudApprovedCount++;
+            }
+        }
+        return round($fraudApprovedCount / $comments->count() * 1000) / 10;
+    }
+
+    public function getNewStatusInt(string $newStatus, int $userId): int
+    {
+        //User`s last comment (with status)
+        $lastComment = $this->comments()->where('author_id', $userId)
+            ->where('status_int', '!=', 0)
+            ->latest()
+            ->first();
+
+        if (!$lastComment) {
+            return Comment::APPROVED_STATUS === $newStatus ? 1 : -1;
+        }
+
+        $lastStatus = $lastComment->status_int > 0 ? Comment::APPROVED_STATUS : Comment::DECLINED_STATUS;
+        if ($newStatus !== $lastStatus) {
+            return Comment::APPROVED_STATUS === $newStatus ? 2 : -2;
+        }
+        return 0;
+    }
 }
