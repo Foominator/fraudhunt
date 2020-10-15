@@ -95,7 +95,8 @@
                                       aria-label="With textarea"></textarea>
                     </div>
 
-                    <div v-if="commentStatus" class="mb-2 mt-4">
+                    <div v-if="commentStatus" class="mb-2 mt-2">
+                        <small class="form-text text-muted">&nbsp;&nbsp;*необязательно</small>
                         <div class="row">
                             <div class="col-md-4" v-for="i in fraudCardsCount">
                                 <div class="input-group ">
@@ -112,10 +113,8 @@
                             </div>
 
                             <div class="col-md-4" v-if="fraudCardsCount < 3">
-                                <div class="form-group">
-                                    <div class="text-secondary pointer mt-2" @click="addCard()">
-                                        Добавить еще карту <i class="fa fa-plus"></i>
-                                    </div>
+                                <div class="text-secondary pointer pt-2" @click="addCard()">
+                                    Добавить еще карту <i class="fa fa-plus"></i>
                                 </div>
                             </div>
                         </div>
