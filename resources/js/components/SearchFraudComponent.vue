@@ -19,7 +19,7 @@
 
                         <div class="input-group mb-3">
                             <input class="form-control" @input="typePhone"
-                                   type="tel" v-mask="'+38(0##)-###-####'"
+                                   type="tel" v-mask="'+38(0##)-###-####'" :value="searchPhone"
                                    placeholder="+38(093)-00-0000">
                             <div class="input-group-append">
                                 <button class="btn btn-primary" type="button" @click="search()">Поиск</button>
@@ -82,7 +82,8 @@
                 <h3 class="mt-2">Добавить комментарий</h3>
 
                 <div v-if="!auth_check" class="mb-4">
-                    <a :href="routes['login']">Войдите в систему</a>, чтобы добавить комментарий
+                    <a :href="routes['login']">Войдите</a> или <a :href="routes['register']">Зарегистрируйтесь</a>,
+                    чтобы добавить комментарий
                 </div>
 
                 <div v-if="auth_check">
@@ -193,11 +194,19 @@
             }
         },
         mounted() {
+            let url = new URL(window.location.href);
+            let phone = url.searchParams.get("phone");
+            if (phone) {
+                this.searchPhone = phone;
+                this.search();
+            }
         },
         methods: {
             typePhone(event) {
                 let maskedPhone = event.target.value;
                 this.searchPhone = maskedPhone.replace('+38', '').replace(/\D/g, '');
+
+                window.history.pushState('page', 'Title', '?phone=' + this.searchPhone);
             },
             addCard() {
                 this.fraudCardsCount++;
@@ -298,6 +307,7 @@
                 }, 3000);
             },
             resetSearch() {
+                window.history.pushState('page', 'Title', '?phone=');
                 this.searchPhone = '';
                 this.showResult = false;
                 this.comments = [];
