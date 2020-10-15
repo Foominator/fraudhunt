@@ -19,35 +19,44 @@
             <div class="col-lg-6 offset-lg-3">
                 <form action="#" method="post" @submit="createFraud">
                     <div class="fraud-form">
-                        <div class="input-group mb-3 mt-4">
-                            <div class="input-group-prepend ">
-                                <span class="input-group-text bg-dark text-white">Телефон</span>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="input-group mb-2 mt-2">
+                                    <div class="input-group-prepend ">
+                                        <span class="input-group-text bg-dark text-white">Телефон</span>
+                                    </div>
+                                    <input class="form-control" v-model="fraudPhone"
+                                           type="tel" v-mask="'+38(0##)-###-####'"
+                                           placeholder="+38(093)-00-0000">
+                                </div>
                             </div>
-                            <input class="form-control" v-model="fraudPhone"
-                                   type="tel" v-mask="'+38(0##)-###-####'"
-                                   placeholder="+38(093)-00-0000">
+
+                            <div class="col-md-6">
+                                <div class="form-group mb-2 mt-2">
+                                    <div class="text-secondary pointer pt-2" @click="addAdditionalPhone()"
+                                         v-if="additionalPhonesCount < 2">
+                                        Добавить еще телефон <i class="fa fa-plus"></i>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6" v-for="i in additionalPhonesCount">
+                                <div class="input-group mb-2 mt-2">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text bg-dark text-white">Тел.</span>
+                                    </div>
+                                    <input type="text" v-model="additionalPhones[i-1]" class="form-control"
+                                           v-mask="'+38(0##)-###-####'"
+                                           placeholder="+38(093)-00-0000">
+                                    <div class="input-group-append pointer" @click="deleteAdditionalPhone(i-1)">
+                                        <span class="input-group-text"><i class="fa fa-times"></i></span>
+                                    </div>
+                                </div>
+                            </div>
+
                         </div>
 
-                        <div class="input-group mb-3 mt-4" v-for="i in additionalPhonesCount">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text bg-dark text-white">Телефон</span>
-                            </div>
-                            <input type="text" v-model="additionalPhones[i-1]" class="form-control"
-                                   v-mask="'+38(0##)-###-####'"
-                                   placeholder="+38(093)-00-0000">
-                            <div class="input-group-append pointer" @click="deleteAdditionalPhone(i-1)">
-                                <span class="input-group-text"><i class="fa fa-times"></i></span>
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                        <span class="text-secondary pointer" @click="addAdditionalPhone()"
-                              v-if="additionalPhonesCount < 3">
-                            Добавить еще телефон <i class="fa fa-plus"></i>
-                        </span>
-                        </div>
-
-                        <div class="card">
+                        <div class="card mt-1 mb-2">
                             <div class="card-header bg-dark text-white">
                                 Подробнее
                             </div>
@@ -65,15 +74,20 @@
                         <div class="help-block"></div>
                     </div>
 
-                    <div class="input-group mb-3 mt-4" v-for="i in fraudCardsCount">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text bg-dark text-white">Карта № {{i}}</span>
-                        </div>
-                        <input type="text" v-model="fraudCards[i-1]" class="form-control"
-                               v-mask="'#### #### #### ####'"
-                               placeholder="0000 0000 0000 0000">
-                        <div class="input-group-append pointer" @click="deleteCard(i-1)">
-                            <span class="input-group-text"><i class="fa fa-times"></i></span>
+                    <small class="form-text text-muted">&nbsp;&nbsp;*необязательно</small>
+                    <div class="row" v-for="i in fraudCardsCount">
+                        <div class="col-md-8">
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text bg-dark text-white">Карта № {{i}}</span>
+                                </div>
+                                <input type="text" v-model="fraudCards[i-1]" class="form-control"
+                                       v-mask="'#### #### #### ####'"
+                                       placeholder="0000 0000 0000 0000">
+                                <div class="input-group-append pointer" @click="deleteCard(i-1)">
+                                    <span class="input-group-text"><i class="fa fa-times"></i></span>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
