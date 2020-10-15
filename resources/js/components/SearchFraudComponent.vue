@@ -101,9 +101,9 @@
                                     <div class="input-group-prepend">
                                         <span class="input-group-text bg-dark text-white">Карта № {{i}}</span>
                                     </div>
-                                    <input type="text" v-model="fraudCards[i-1]" class="form-control" maxlength="16"
-                                           minlength="16"
-                                           placeholder="0000000000000000">
+                                    <input type="text" v-model="fraudCards[i-1]" class="form-control"
+                                           v-mask="'#### #### #### ####'"
+                                           placeholder="0000 0000 0000 0000">
                                     <div class="input-group-append pointer" @click="deleteCard(i-1)">
                                         <span class="input-group-text"><i class="fa fa-times"></i></span>
                                     </div>
@@ -112,9 +112,9 @@
 
                             <div class="col-md-4" v-if="fraudCardsCount < 3">
                                 <div class="form-group">
-                                <div class="text-secondary pointer mt-2" @click="addCard()">
-                                    Добавить еще карту <i class="fa fa-plus"></i>
-                                </div>
+                                    <div class="text-secondary pointer mt-2" @click="addCard()">
+                                        Добавить еще карту <i class="fa fa-plus"></i>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -305,6 +305,10 @@
                 this.currentPage = 1;
             },
             createComment() {
+                for (let i in this.fraudCards) {
+                    this.fraudCards[i] = this.fraudCards[i].replace(/\D/g,'');
+                }
+
                 let status = 'declined';
                 if (this.commentStatus) {
                     status = 'approved';
