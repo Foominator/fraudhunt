@@ -5,6 +5,7 @@
 /public/js
 /public/fonts
 /storage/*.key
+/storage/dumps
 /vendor
 /docker
 .idea
