@@ -305,8 +305,9 @@
                 this.currentPage = 1;
             },
             createComment() {
+                let cards = [];
                 for (let i in this.fraudCards) {
-                    this.fraudCards[i] = this.fraudCards[i].replace(/\D/g,'');
+                    cards.push(this.fraudCards[i].replace(/\D/g, ''));
                 }
 
                 let status = 'declined';
@@ -317,7 +318,7 @@
                 const params = {
                     phone_id: this.firstComment.phone.id,
                     comment: this.commentText,
-                    cards: this.fraudCards,
+                    cards: cards,
                     status: status,
                 };
 

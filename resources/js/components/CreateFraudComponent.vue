@@ -23,8 +23,9 @@
                             <div class="input-group-prepend ">
                                 <span class="input-group-text bg-dark text-white">Телефон</span>
                             </div>
-                            <input type="text" class="form-control" v-model="fraudPhone"
-                                   maxlength="10" placeholder="0930000000" required>
+                            <input class="form-control" v-model="fraudPhone"
+                                   type="tel" v-mask="'+38(0##)-###-####'"
+                                   placeholder="+38(093)-00-0000">
                         </div>
 
                         <div class="input-group mb-3 mt-4" v-for="i in additionalPhonesCount">
@@ -32,8 +33,8 @@
                                 <span class="input-group-text bg-dark text-white">Телефон</span>
                             </div>
                             <input type="text" v-model="additionalPhones[i-1]" class="form-control"
-                                   maxlength="10"
-                                   placeholder="0930000000">
+                                   v-mask="'+38(0##)-###-####'"
+                                   placeholder="+38(093)-00-0000">
                             <div class="input-group-append pointer" @click="deleteAdditionalPhone(i-1)">
                                 <span class="input-group-text"><i class="fa fa-times"></i></span>
                             </div>
@@ -68,9 +69,9 @@
                         <div class="input-group-prepend">
                             <span class="input-group-text bg-dark text-white">Карта № {{i}}</span>
                         </div>
-                        <input type="text" v-model="fraudCards[i-1]" class="form-control" maxlength="16"
-                               minlength="16"
-                               placeholder="0000000000000000">
+                        <input type="text" v-model="fraudCards[i-1]" class="form-control"
+                               v-mask="'#### #### #### ####'"
+                               placeholder="0000 0000 0000 0000">
                         <div class="input-group-append pointer" @click="deleteCard(i-1)">
                             <span class="input-group-text"><i class="fa fa-times"></i></span>
                         </div>
@@ -136,12 +137,22 @@
                 }
             },
             createFraud(e) {
-                const phones = this.additionalPhones;
-                phones.push(this.fraudPhone);
+                // Remove Input Masks
+                let phones = [];
+                let cards = [];
+                for (let i in this.additionalPhones) {
+                    phones.push(this.additionalPhones[i].replace('+38', '').replace(/\D/g, ''));
+                }
+                phones.push(this.fraudPhone.replace('+38', '').replace(/\D/g, ''));
+
+                for (let i in this.fraudCards) {
+                    cards.push(this.fraudCards[i].replace(/\D/g, ''));
+                }
+
                 const params = {
                     comment: this.fraudComment,
                     phones: phones,
-                    cards: this.fraudCards,
+                    cards: cards,
                 };
                 window.axios.post('/' + this.routes['fraud.store'], params).then(({data}) => {
                     this.showMessages(data);
@@ -155,7 +166,6 @@
                     }
                 });
 
-                console.log('success');
                 e.preventDefault();
             },
             showMessages(messages) {
