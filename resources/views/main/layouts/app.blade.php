@@ -30,6 +30,21 @@
                     </li>
                 </ul>
             @endif
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        {{ strtoupper(app()->getLocale())}}
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        @if('ua' ==app()->getLocale())
+                            <a class="dropdown-item" href="{{route('set-locale', ['locale' => 'ru'])}}">RU</a>
+                        @else
+                            <a class="dropdown-item" href="{{route('set-locale', ['locale' => 'ua'])}}">UA</a>
+                        @endif
+                    </div>
+                </li>
+            </ul>
 
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
                     aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -87,7 +102,8 @@
         <div class="text-center pb-1 pt-2">
             <p class="text-secondary">
                 Размещая или используя информацию в базе данных "FraudHunt" вы подтверждаете своё согласие с <a
-                    href="{{route('rules')}}">Правилами использования сервиса</a>. Все права защищены. Любое копирование,
+                    href="{{route('rules')}}">Правилами использования сервиса</a>. Все права защищены. Любое
+                копирование,
                 публикация,
                 перепечатка материалов сайта разрешается при условии наличия прямой индексируемой гиперссылки на
                 "Всеукраинская база данных информации о мошенниках «Fraud Hunt»".

@@ -17,6 +17,7 @@ Auth::routes();
 
 //Frontend
 Route::get('/', [App\Http\Controllers\Frontend\MainController::class, 'main'])->name('main');
+Route::get('/set-locale/{locale}', [App\Http\Controllers\Frontend\MainController::class, 'setLocale'])->name('set-locale');
 Route::get('/advices', [App\Http\Controllers\Frontend\MainController::class, 'advices'])->name('advices');
 Route::get('/rules', [App\Http\Controllers\Frontend\MainController::class, 'rules'])->name('rules');
 

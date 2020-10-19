@@ -29,4 +29,17 @@ class MainController extends Controller
     {
         return view('main.rules');
     }
+
+    public function setLocale(string $locale)
+    {
+        if (!in_array($locale, ['ua', 'ru'])) {
+            abort(404);
+        }
+
+        if ($user = auth()->user()) {
+            $user->locale = $locale;
+            $user->save();
+        }
+        return redirect()->route('main')->cookie(cookie('locale', $locale, time() + (10 * 365 * 24 * 60 * 60)));
+    }
 }
