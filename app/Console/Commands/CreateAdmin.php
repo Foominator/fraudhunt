@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Models\Role;
 use App\Models\User;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Hash;
@@ -52,6 +53,8 @@ class CreateAdmin extends Command
             'email' => $email,
             'password' => Hash::make($password),
         ]);
+        $admin->attachRole(Role::ADMIN_ROLE_SLUG);
+
         dd("New admin`s ID = $admin->id");
         return 0;
     }
