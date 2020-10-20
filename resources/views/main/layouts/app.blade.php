@@ -54,19 +54,19 @@
             <div class="navbar-collapse collapse w-100 order-3 dual-collapse2 pr-5">
                 <ul class="navbar-nav ml-auto">
                     <li class="nav-item pl-4 @if('contacts' === $currentRouteName) active @endif">
-                        <a class="nav-link" href="#">Контакты</a> <!-- contacts -->
+                        <a class="nav-link" href="#">{{__('menu.contacts')}}</a> <!-- contacts -->
                     </li>
                     <li class="nav-item pl-4 @if('rules' === $currentRouteName) active @endif">
-                        <a class="nav-link" href="{{route('rules')}}">Правила</a> <!-- rules -->
+                        <a class="nav-link" href="{{route('rules')}}">{{__('menu.rules')}}</a> <!-- rules -->
                     </li>
                     <li class="nav-item pl-4 @if('fraud.index' === $currentRouteName) active @endif">
-                        <a class="nav-link" href="{{route('fraud.index')}}">Мошенники</a> <!-- frauds -->
+                        <a class="nav-link" href="{{route('fraud.index')}}">{{__('menu.frauds')}}</a> <!-- frauds -->
                     </li>
                     <li class="nav-item pl-4 @if('fraud.create' === $currentRouteName) active @endif">
-                        <a class="nav-link" href="{{route('fraud.create')}}">Добавить мошенника</a> <!-- add_fraud -->
+                        <a class="nav-link" href="{{route('fraud.create')}}">{{__('menu.add_fraud')}}</a> <!-- add_fraud -->
                     </li>
                     <li class="nav-item pl-4 @if('advices' === $currentRouteName) active @endif">
-                        <a class="nav-link" href="{{route('advices')}}">Полезные советы</a> <!-- advices -->
+                        <a class="nav-link" href="{{route('advices')}}">{{__('menu.advices')}}</a> <!-- advices -->
                     </li>
 
                     @auth
@@ -82,11 +82,11 @@
                         </form>
                     @else
                         <li class="nav-item pl-4">
-                            <a class="nav-link" href="{{ route('register') }}">Регистрация</a> <!-- registration -->
+                            <a class="nav-link" href="{{ route('register') }}">{{__('menu.registration')}}</a> <!-- registration -->
                         </li>
                         <li class="nav-item pl-4">
                             <a class="nav-link" href="{{ route('login') }}">
-                                Вход <i class="fa fa-door-closed"></i>
+                                {{__('menu.login')}} <i class="fa fa-door-closed"></i>
                             </a> <!-- login -->
                         </li>
                     @endif
