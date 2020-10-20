@@ -16,44 +16,28 @@ class SetLocale
      */
     public function handle(Request $request, Closure $next)
     {
-        $locale = app()->getLocale();
+        $savedLocale = app()->getLocale();
         if ($request->cookie('locale')) {
-            $locale = $request->cookie('locale');
+            $savedLocale = $request->cookie('locale');
         }
         if (auth()->check()) {
-            $locale = auth()->user()->locale;
+            $savedLocale = auth()->user()->locale;
         }
 
-        if (!in_array($locale, ['ua', 'ru'])) {
-            abort(404);
-        }
         $urlLocale = $request->segment(1);
         if (!in_array($urlLocale, ['ua', 'ru'])) {
             $urlLocale = 'ua'; //default
         }
-        if ($urlLocale !== $locale) {
-            $segments = request()->segments();
-            if ('ua' == $locale) { //default locale is not in path
-                unset($segments[0]);
-                $newPath = collect($segments)->implode('/');
 
-            } else {
-                if (in_array($segments[0] ?? 'ua', ['ua', 'ru'])) {
-                    $segments[0] = $locale;
-                    $newPath = collect($segments)->implode('/');
-                } else {
-                    $newPath = collect($segments)->implode('/');
-                    $newPath = "$locale/$newPath";
-                }
-            }
-            $queryString = $request->getQueryString();
-            if (strlen($queryString)) {
-                $queryString = "?$queryString";
-            }
-            return redirect()->to("/$newPath$queryString");
+        if ('/' === $request->getPathInfo() && 'ua' !== $savedLocale) {
+            return redirect("/$savedLocale");
         }
 
-        app()->setLocale($locale);
+        if (!in_array($urlLocale, ['ua', 'ru'])) {
+            abort(404);
+        }
+
+        app()->setLocale($urlLocale);
         return $next($request);
     }
 }
