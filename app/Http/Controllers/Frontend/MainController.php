@@ -40,6 +40,6 @@ class MainController extends Controller
             $user->locale = $locale;
             $user->save();
         }
-        return redirect()->route('main')->cookie(cookie('locale', $locale, time() + (10 * 365 * 24 * 60 * 60)));
+        return redirect()->back()->cookie(cookie('locale', $locale, time() + (10 * 365 * 24 * 60 * 60)));
     }
 }

@@ -27,9 +27,30 @@ class SetLocale
         if (!in_array($locale, ['ua', 'ru'])) {
             abort(404);
         }
+        $urlLocale = $request->segment(1);
+        if (!in_array($urlLocale, ['ua', 'ru'])) {
+            $urlLocale = 'ua'; //default
+        }
+        if ($urlLocale !== $locale) {
+            $segments = request()->segments();
+            if ('ua' == $locale) { //default locale is not in path
+                unset($segments[0]);
+                $newPath = collect($segments)->implode('/');
+
+            } else {
+                if (in_array($segments[0] ?? 'ua', ['ua', 'ru'])) {
+                    $segments[0] = $locale;
+                    $newPath = collect($segments)->implode('/');
+                } else {
+                    $newPath = collect($segments)->implode('/');
+                    $newPath = "$locale/$newPath";
+                }
+            }
+            return redirect()->to("/$newPath");
+        }
+
 
         app()->setLocale($locale);
-//        dump($locale);
         return $next($request);
     }
 }

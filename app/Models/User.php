@@ -34,6 +34,7 @@ class User extends Authenticatable
     public $fillable = [
         'name',
         'email',
+        'locale',
         'email_verified_at',
         'password',
         'remember_token'
@@ -59,6 +60,7 @@ class User extends Authenticatable
      */
     public static $rules = [
         'name' => 'required|string|max:255',
+        'locale' => 'string|in:ua,ru',
         'email' => 'unique|required|string|max:255',
         'email_verified_at' => 'nullable',
         'password' => 'required|string|max:255',
