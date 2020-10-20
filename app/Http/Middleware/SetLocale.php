@@ -47,7 +47,10 @@ class SetLocale
                 }
             }
             $queryString = $request->getQueryString();
-            return redirect()->to("/$newPath?$queryString");
+            if (strlen($queryString)) {
+                $queryString = "?$queryString";
+            }
+            return redirect()->to("/$newPath$queryString");
         }
 
         app()->setLocale($locale);
