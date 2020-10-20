@@ -46,9 +46,9 @@ class SetLocale
                     $newPath = "$locale/$newPath";
                 }
             }
-            return redirect()->to("/$newPath");
+            $queryString = $request->getQueryString();
+            return redirect()->to("/$newPath?$queryString");
         }
-
 
         app()->setLocale($locale);
         return $next($request);

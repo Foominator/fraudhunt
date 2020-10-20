@@ -2,7 +2,7 @@
     <div>
         <div class="row">
             <div class="col-lg-6 offset-lg-3">
-                <h1>Добавить мошенника
+                <h1>{{translations['add_fraud_label']}}
                 </h1>
             </div>
         </div>
@@ -27,7 +27,7 @@
                                 <div class="form-group mb-2 mt-2">
                                     <div class="text-secondary pointer pt-2" @click="addAdditionalPhone()"
                                          v-if="additionalPhonesCount < 2">
-                                        Добавить еще телефон <i class="fa fa-plus"></i>
+                                         {{translations['add_phone_label']}} <i class="fa fa-plus"></i>
                                     </div>
                                 </div>
                             </div>
@@ -50,14 +50,14 @@
 
                         <div class="card mt-1 mb-2">
                             <div class="card-header bg-dark text-white">
-                                Подробнее
+                                {{translations['description_label']}}
                             </div>
                             <div class="card-body padding-0">
                                 <div class="input-group">
 
                             <textarea class="form-control"
                                       v-model="fraudComment"
-                                      rows="6" placeholder="Опишите ситуацию..." required
+                                      rows="6" :placeholder="translations['description_placeholder']" required
                                       aria-label="With textarea"></textarea>
                                 </div>
                             </div>
@@ -66,7 +66,7 @@
                         <div class="help-block"></div>
                     </div>
 
-                    <small class="form-text text-muted">&nbsp;&nbsp;*необязательно</small>
+                    <small class="form-text text-muted">&nbsp;&nbsp;*{{translations['not_required']}}</small>
                     <div class="row" v-for="i in fraudCardsCount">
                         <div class="col-md-8">
                             <div class="input-group mb-3">
@@ -85,14 +85,14 @@
 
                     <div class="form-group">
                         <span class="text-secondary pointer" @click="addCard()" v-if="fraudCardsCount < 3">
-                            Добавить еще карту <i class="fa fa-plus"></i>
+                            {{translations['add_card_label']}} <i class="fa fa-plus"></i>
                         </span>
                     </div>
 
                     <div class="row">
                         <div class="col-md-2">
                             <div class="form-group">
-                                <button type="submit" class="btn btn-success">Создать</button>
+                                <button type="submit" class="btn btn-success">{{translations['create_label']}}</button>
                             </div>
                         </div>
                         <div class="col-md-10">
@@ -109,7 +109,7 @@
 <script>
     export default {
         name: "CreateFraudComponent",
-        props: ["routes"],
+        props: ["routes", "translations"],
         data() {
             return {
                 messages: [],

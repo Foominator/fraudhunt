@@ -1,7 +1,7 @@
 <template>
     <div class="container">
 
-        <h1>Сейчас в базе {{frauds_count}} записи(ей) о мошенниках</h1>
+        <h1>{{translations['info_count.part1']}} {{frauds_count}} {{translations['info_count.part2']}}</h1>
 
         <div class="row">
             <div class="col-lg-3">
@@ -14,35 +14,37 @@
                                    type="tel" v-mask="'+38(0##)-###-####'" :value="searchPhone"
                                    placeholder="+38(093)-00-0000">
                             <div class="input-group-append">
-                                <button class="btn btn-primary" type="button" @click="search()">Поиск</button>
+                                <button class="btn btn-primary" type="button" @click="search()">
+                                    {{translations['search_button']}}
+                                </button>
                             </div>
                         </div>
-                        <small class="form-text text-muted">Для поиска введите полный номер
-                            телефона (10 цифр начиная с "0")</small>
+                        <small class="form-text text-muted">{{translations['search_description']}}</small>
 
                         <div class="help-block"></div>
                     </div>
                 </div>
             </div>
             <div class="col-lg-3">
-                <button type="reset" class="btn btn-secondary" @click="resetSearch()">Сброс</button>
+                <button type="reset" class="btn btn-secondary" @click="resetSearch()">{{translations['reset_button']}}
+                </button>
             </div>
         </div>
 
         <p>
-            <a class="btn btn-success" :href="this.routes['fraud.create']">Добавить мошенника</a>
+            <a class="btn btn-success" :href="this.routes['fraud.create']">{{translations['add_fraud_button']}}</a>
         </p>
 
         <div v-if="showResult">
-            <p v-if="firstComment.id === undefined">По вашему запросу ничего не найдено</p>
+            <p v-if="firstComment.id === undefined">{{translations['empty_result']}}</p>
 
             <div v-if="firstComment.id > 0">
                 <h1>
-                    Результат поиска. <span
+                    {{translations['search_result_label']}}. <span
                     class="text-secondary">Телефон - {{firstComment.phone.number}} </span>
                     <span class="float-right"
                           v-bind:class="{ 'text-danger': this.fraudPercent > 40 ,'text-success': this.fraudPercent <= 40 }">
-                    Мошенник {{this.fraudPercent}}%
+                    {{translations['fraud_label']}} {{this.fraudPercent}}%
                     </span>
                 </h1>
 
@@ -60,7 +62,7 @@
                                             {{firstComment.description}}
                                         </p>
                                         <p class="meta"></p>
-                                        <div v-if="firstComment.cards.length">Добавлены карты мошенника:</div>
+                                        <div v-if="firstComment.cards.length">{{translations['cards_added']}}:</div>
                                         <div v-for="card in firstComment.cards">
                                             <b><i class="fa fa-credit-card"></i> {{card.card_num}} </b>
                                         </div>
@@ -71,7 +73,7 @@
                     </div>
                 </div>
 
-                <h3 class="mt-2">Добавить комментарий</h3>
+                <h3 class="mt-2">{{translations['add_comment_label']}}</h3>
 
                 <div v-if="!auth_check" class="mb-4">
                     <a :href="routes['login']">Войдите</a> или <a :href="routes['register']">Зарегистрируйтесь</a>,
@@ -82,12 +84,12 @@
                     <div class="input-group">
                             <textarea class="form-control"
                                       v-model="commentText"
-                                      rows="4" placeholder="Опишите ситуацию..." required
+                                      rows="4" :placeholder="translations['input_description_placeholder']" required
                                       aria-label="With textarea"></textarea>
                     </div>
 
                     <div v-if="commentStatus" class="mb-2 mt-2">
-                        <small class="form-text text-muted">&nbsp;&nbsp;*необязательно</small>
+                        <small class="form-text text-muted">&nbsp;&nbsp;*{{translations['not_required']}}</small>
                         <div class="row">
                             <div class="col-md-4" v-for="i in fraudCardsCount">
                                 <div class="input-group ">
@@ -105,7 +107,7 @@
 
                             <div class="col-md-4" v-if="fraudCardsCount < 3">
                                 <div class="text-secondary pointer pt-2" @click="addCard()">
-                                    Добавить еще карту <i class="fa fa-plus"></i>
+                                    {{translations['add_one_more_card_text']}} <i class="fa fa-plus"></i>
                                 </div>
                             </div>
                         </div>
@@ -113,14 +115,14 @@
 
                     <div class="form-check">
                         <input type="checkbox" v-model="commentStatus" class="form-check-input" checked>
-                        <label class="form-check-label">Подтверждаю мошенничество</label>
+                        <label class="form-check-label">{{translations['approve_fraud_text']}}</label>
                     </div>
 
                     <div class="row">
                         <div class="col-md-3">
                             <div class="form-group">
-                                <button type="button" class="btn btn-success" @click="createComment()">Добавить
-                                    комментарий
+                                <button type="button" class="btn btn-success" @click="createComment()">
+                                    {{translations['add_comment_button']}}
                                 </button>
                             </div>
                         </div>
@@ -132,7 +134,7 @@
 
                 </div>
 
-                <h3 class="mt-4" v-if="comments.length">Последние комментарии</h3>
+                <h3 class="mt-4" v-if="comments.length">{{translations['last_comments_label']}}</h3>
 
                 <div class="row">
                     <div class="col-md-12">
@@ -142,15 +144,15 @@
                                     <div class="post-comments">
                                         <p class="meta">{{comment.date}} <a href="#">{{comment.author.name}}</a>
 
-                                            <span class="float-right" v-if="comment.status_int > 0">Считает, что {{firstComment.phone.number}} - <b>Мошенник</b></span>
-                                            <span class="float-right" v-if="comment.status_int < 0">Считает, что {{firstComment.phone.number}} - <b>НЕ Мошенник</b></span>
+                                            <span class="float-right" v-if="comment.status_int > 0">{{translations['opinion_text']}} {{firstComment.phone.number}} - <b>{{translations['fraud_label']}}</b></span>
+                                            <span class="float-right" v-if="comment.status_int < 0">{{translations['opinion_text']}} {{firstComment.phone.number}} - <b>НЕ {{translations['fraud_label']}}</b></span>
                                         </p>
 
                                         <p>
                                             {{comment.description}}
                                         </p>
                                         <p v-if="comment.cards.length" class="meta"></p>
-                                        <div v-if="comment.cards.length">Добавлены карты мошенника:</div>
+                                        <div v-if="comment.cards.length">{{translations['cards_added']}}:</div>
                                         <div v-for="card in comment.cards">
                                             <b><i class="fa fa-credit-card"></i> {{card.card_num}} </b>
                                         </div>
@@ -161,7 +163,8 @@
                     </div>
                 </div>
 
-                <button class="btn btn-secondary mb-2" v-if="currentPage < maxPage" @click="loadPage">Показать еще
+                <button class="btn btn-secondary mb-2" v-if="currentPage < maxPage" @click="loadPage">
+                    {{translations['show_more']}}
                 </button>
             </div>
         </div>
@@ -171,7 +174,7 @@
 <script>
     export default {
         name: "SearchFraudComponent",
-        props: ["frauds_count", "routes", "auth_check"],
+        props: ["frauds_count", "routes", "auth_check", "translations"],
         data() {
             return {
                 errors: [],
@@ -224,7 +227,7 @@
                 this.comments = [];
                 this.firstComment = [];
                 this.currentPage = 1;
-                window.axios.get(this.routes['fraud.search'], {params: {phone: this.searchPhone}}).then(({data}) => {
+                window.axios.get("/" + this.routes['fraud.search'], {params: {phone: this.searchPhone}}).then(({data}) => {
                     this.showResult = true;
                     this.firstComment = data.first_comment;
                     this.comments = data.comments.data;
@@ -245,7 +248,7 @@
             loadPage() {
                 if (this.currentPage < this.maxPage) {
                     this.currentPage++;
-                    window.axios.get(this.routes['fraud.search'], {
+                    window.axios.get("/" + this.routes['fraud.search'], {
                         params: {
                             phone: this.searchPhone,
                             page: this.currentPage
@@ -331,7 +334,7 @@
                     status: status,
                 };
 
-                window.axios.post(this.routes['fraud.comment'], params).then(({data}) => {
+                window.axios.post("/" + this.routes['fraud.comment'], params).then(({data}) => {
                     this.showMessages(data);
                     this.commentText = '';
                     this.fraudCards = [];
