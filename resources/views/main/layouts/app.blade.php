@@ -11,7 +11,7 @@
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     @stack('styles')
 
-    <link rel="icon" type="image/png" href="{{asset('images/favicon.ico')}}"/>
+    <link rel="icon" type="image/png" href="{{asset('images/FraudHunt_Logo_160x55_5.png')}}"/>
 </head>
 <body>
 
@@ -53,9 +53,6 @@
 
             <div class="navbar-collapse collapse w-100 order-3 dual-collapse2 pr-5">
                 <ul class="navbar-nav ml-auto">
-                    <li class="nav-item pl-4 @if('contacts' === $currentRouteName) active @endif">
-                        <a class="nav-link" href="#">{{__('menu.contacts')}}</a> <!-- contacts -->
-                    </li>
                     <li class="nav-item pl-4 @if('rules' === $currentRouteName) active @endif">
                         <a class="nav-link" href="{{route('rules')}}">{{__('menu.rules')}}</a> <!-- rules -->
                     </li>

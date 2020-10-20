@@ -25,7 +25,7 @@
     <link rel="stylesheet"
           href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.7.14/css/bootstrap-datetimepicker.min.css">
 
-    <link rel="icon" type="image/png" href="{{asset('images/favicon.ico')}}"/>
+    <link rel="icon" type="image/png" href="{{asset('images/FraudHunt_Logo_160x55_5.png')}}"/>
     @yield('css')
 </head>
 
