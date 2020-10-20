@@ -19,7 +19,8 @@ class MainController extends Controller
      */
     public function advices()
     {
-        return view('main.advices');
+        $locale = app()->getLocale();
+        return view("main.static_content.$locale.advices");
     }
 
     /**
@@ -27,7 +28,8 @@ class MainController extends Controller
      */
     public function rules()
     {
-        return view('main.rules');
+        $locale = app()->getLocale();
+        return view("main.static_content.$locale.rules");
     }
 
     public function setLocale(string $newLocale)
