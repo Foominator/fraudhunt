@@ -73,7 +73,7 @@
                         <li class="nav-item pl-4">
                             <a href="{{ url('/logout') }}" class="nav-link"
                                onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                                Выйти <i class="fa fa-door-open"></i>
+                                {{__('menu.logout')}} <i class="fa fa-door-open"></i>
                             </a>
                         </li>
 

@@ -8,4 +8,5 @@ return [
     'advices' => 'Полезные советы',
     'registration' => 'Регистрация',
     'login' => 'Вход',
+    'logout' => 'Выход',
 ];
