@@ -47,5 +47,11 @@ class ViewServiceProvider extends ServiceProvider
             });
             $view->with('routes', $routes);
         });
+
+        View::composer(['main.layouts.app'], function ($view) {
+            $locales = config('app.additionalLocales');
+            $locales[] = config('app.defaultLocale');
+            $view->with('locales', $locales);
+        });
     }
 }

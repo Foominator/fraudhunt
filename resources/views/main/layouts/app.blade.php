@@ -37,11 +37,14 @@
                         {{ strtoupper(app()->getLocale())}}
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        @if('ua' ==app()->getLocale())
-                            <a class="dropdown-item" href="{{route('set-locale', ['locale' => 'ru'])}}">RU</a>
-                        @else
-                            <a class="dropdown-item" href="{{route('set-locale', ['locale' => 'ua'])}}">UA</a>
-                        @endif
+                        @foreach($locales as $locale)
+                            @if($locale !== app()->getLocale())
+                                <a class="dropdown-item"
+                                   href="{{route('set-locale', ['locale' => $locale])}}">
+                                    {{strtoupper($locale)}}
+                                </a>
+                            @endif
+                        @endforeach
                     </div>
                 </li>
             </ul>
@@ -54,16 +57,24 @@
             <div class="navbar-collapse collapse w-100 order-3 dual-collapse2 pr-5">
                 <ul class="navbar-nav ml-auto">
                     <li class="nav-item pl-4 @if('rules' === $currentRouteName) active @endif">
-                        <a class="nav-link" href="{{(new App\Services\RouteBuilder)->route('rules')}}">{{__('menu.rules')}}</a> <!-- rules -->
+                        <a class="nav-link"
+                           href="{{(new App\Services\RouteBuilder)->route('rules')}}">{{__('menu.rules')}}</a>
+                        <!-- rules -->
                     </li>
                     <li class="nav-item pl-4 @if('fraud.index' === $currentRouteName) active @endif">
-                        <a class="nav-link" href="{{(new App\Services\RouteBuilder)->route('fraud.index')}}">{{__('menu.frauds')}}</a> <!-- frauds -->
+                        <a class="nav-link"
+                           href="{{(new App\Services\RouteBuilder)->route('fraud.index')}}">{{__('menu.frauds')}}</a>
+                        <!-- frauds -->
                     </li>
                     <li class="nav-item pl-4 @if('fraud.create' === $currentRouteName) active @endif">
-                        <a class="nav-link" href="{{(new App\Services\RouteBuilder)->route('fraud.create')}}">{{__('menu.add_fraud')}}</a> <!-- add_fraud -->
+                        <a class="nav-link"
+                           href="{{(new App\Services\RouteBuilder)->route('fraud.create')}}">{{__('menu.add_fraud')}}</a>
+                        <!-- add_fraud -->
                     </li>
                     <li class="nav-item pl-4 @if('advices' === $currentRouteName) active @endif">
-                        <a class="nav-link" href="{{(new App\Services\RouteBuilder)->route('advices')}}">{{__('menu.advices')}}</a> <!-- advices -->
+                        <a class="nav-link"
+                           href="{{(new App\Services\RouteBuilder)->route('advices')}}">{{__('menu.advices')}}</a>
+                        <!-- advices -->
                     </li>
 
                     @auth
@@ -79,7 +90,8 @@
                         </form>
                     @else
                         <li class="nav-item pl-4">
-                            <a class="nav-link" href="{{ route('register') }}">{{__('menu.registration')}}</a> <!-- registration -->
+                            <a class="nav-link" href="{{ route('register') }}">{{__('menu.registration')}}</a>
+                            <!-- registration -->
                         </li>
                         <li class="nav-item pl-4">
                             <a class="nav-link" href="{{ route('login') }}">
@@ -99,7 +111,8 @@
         <div class="text-center pb-1 pt-2">
             <p class="text-secondary">
                 Размещая или используя информацию в базе данных "FraudHunt" вы подтверждаете своё согласие с <a
-                    href="{{(new App\Services\RouteBuilder)->route('rules')}}">Правилами использования сервиса</a>. Все права защищены. Любое
+                    href="{{(new App\Services\RouteBuilder)->route('rules')}}">Правилами использования сервиса</a>. Все
+                права защищены. Любое
                 копирование,
                 публикация,
                 перепечатка материалов сайта разрешается при условии наличия прямой индексируемой гиперссылки на
