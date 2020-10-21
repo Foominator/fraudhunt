@@ -25,8 +25,8 @@ class RouteBuilder
     public function removeLocalePrefix(string $routeName): string
     {
         $nameSegments = explode('.', $routeName);
-        $locales = config('app.additionalLocales');
-        $locales[] = config('app.defaultLocale');
+        $locales = config('app.additional_locales');
+        $locales[] = config('app.default_locale');
         if (!in_array($nameSegments[0], $locales)) { // locale not found in route name
             return $routeName;
         }

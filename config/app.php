@@ -82,8 +82,13 @@ return [
 
     'locale' => 'ua',
 
-    'defaultLocale' => 'ua',
-    'additionalLocales' => ['ru'],
+    'default_locale' => 'ua',
+    'additional_locales' => ['ru'],
+
+    'prefixes_locales' => [
+        'ua' => '',
+        'ru' => 'ru',
+    ],
 
     /*
     |--------------------------------------------------------------------------

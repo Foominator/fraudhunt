@@ -25,8 +25,8 @@ class SetLocale
             $savedLocale = auth()->user()->locale;
         }
 
-        $defaultLocale = config('app.defaultLocale');
-        $locales = config('app.additionalLocales');
+        $defaultLocale = config('app.default_locale');
+        $locales = config('app.additional_locales');
         $locales[] = $defaultLocale;
 
         $name = Route::currentRouteName();

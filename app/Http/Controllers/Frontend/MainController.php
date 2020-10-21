@@ -35,8 +35,8 @@ class MainController extends Controller
 
     public function setLocale(string $newLocale)
     {
-        $locales = config('app.additionalLocales');
-        $locales[] = config('app.defaultLocale');
+        $locales = config('app.additional_locales');
+        $locales[] = config('app.default_locale');
         if (!in_array($newLocale, $locales)) {
             abort(404);
         }
