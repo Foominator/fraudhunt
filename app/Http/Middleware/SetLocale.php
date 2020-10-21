@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
 
 class SetLocale
 {
@@ -24,20 +25,21 @@ class SetLocale
             $savedLocale = auth()->user()->locale;
         }
 
-        $urlLocale = $request->segment(1);
-        if (!in_array($urlLocale, ['ua', 'ru'])) {
-            $urlLocale = 'ua'; //default
+        $defaultLocale = config('app.defaultLocale');
+        $locales = config('app.additionalLocales');
+        $locales[] = $defaultLocale;
+
+        $name = Route::currentRouteName();
+        $routeLocale = explode('.', $name)[0];
+        if (!in_array($routeLocale, $locales)) {
+            $routeLocale = $defaultLocale;
         }
 
-        if ('/' === $request->getPathInfo() && 'ua' !== $savedLocale) {
+        if ('/' === $request->getPathInfo() && $defaultLocale !== $savedLocale) {
             return redirect("/$savedLocale");
         }
 
-        if (!in_array($urlLocale, ['ua', 'ru'])) {
-            abort(404);
-        }
-
-        app()->setLocale($urlLocale);
+        app()->setLocale($routeLocale);
         return $next($request);
     }
 }
