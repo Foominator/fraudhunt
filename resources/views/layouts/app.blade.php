@@ -36,7 +36,7 @@
         <header class="main-header">
 
             <!-- Logo -->
-            <a href="{{route('main')}}" class="logo">
+            <a href="{{(new \App\Services\RouteBuilder())->route('main')}}" class="logo">
                 <b>Fraudhunt</b>
             </a>
 
