@@ -41,8 +41,16 @@ class RouteServiceProvider extends ServiceProvider
             Route::prefix('api')
                 ->middleware('api')
                 ->as('api.')
-                ->namespace($this->namespace."\\API")
+                ->namespace($this->namespace . "\\API")
                 ->group(base_path('routes/api.php'));
+
+            foreach (config('app.prefixes_locales') as $locale => $prefix) {
+                Route::middleware(['localizable'])
+                    ->namespace($this->namespace . "\\Localizable")
+                    ->prefix($prefix)
+                    ->name("$locale.")
+                    ->group(base_path('routes/localizable.php'));
+            }
 
             Route::middleware('web')
                 ->namespace($this->namespace)
