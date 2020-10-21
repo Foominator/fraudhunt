@@ -13,11 +13,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-$prefix = '';
-if (in_array(request()->segment(1), ['ru'])) { // if default 'ua' prefix is empty!
-    $prefix = request()->segment(1);
-}
-
 Route::group(['middleware' => 'set-locale'], function () { //default locale
     //Frontend
     Route::name('ua.')->group(function () {
