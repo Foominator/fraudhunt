@@ -49,7 +49,15 @@ class RouteServiceProvider extends ServiceProvider
                     ->namespace($this->namespace . "\\Localizable")
                     ->prefix($prefix)
                     ->name("$locale.")
-                    ->group(base_path('routes/localizable.php'));
+                    ->group(base_path('routes/localizable/common.php'));
+
+                if (file_exists(base_path("routes/localizable/$locale.php"))) {
+                    Route::middleware(['localizable'])
+                        ->namespace($this->namespace . "\\Localizable")
+                        ->prefix($prefix)
+                        ->name("$locale.")
+                        ->group(base_path("routes/localizable/$locale.php"));
+                }
             }
 
             Route::middleware('web')

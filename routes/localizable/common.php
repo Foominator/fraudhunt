@@ -3,7 +3,6 @@
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [App\Http\Controllers\Frontend\MainController::class, 'main'])->name('main');
-Route::get('/advices', [App\Http\Controllers\Frontend\MainController::class, 'advices'])->name('advices');
 Route::get('/rules', [App\Http\Controllers\Frontend\MainController::class, 'rules'])->name('rules');
 
 Route::get('/frauds', [App\Http\Controllers\Frontend\FraudController::class, 'index'])->name('fraud.index');
