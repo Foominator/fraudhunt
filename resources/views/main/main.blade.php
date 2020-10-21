@@ -8,14 +8,14 @@
             <img class="rounded mx-auto d-block" src="{{ asset('images/StopFraud_960x432.png') }}" alt="">
             <h2 class="text-white">{{__('messages.main.header')}}</h2>
             <a class="btn btn-danger btn-lg align-center"
-               href="{{route('fraud.create')}}">{{__('messages.main.button')}}</a> <br>
+               href="{{(new App\Services\RouteBuilder)->route('fraud.create')}}">{{__('messages.main.button')}}</a> <br>
         </div>
     </div>
 
     <div class="container">
         <div class="row pt-4 pb-4">
             <div class="col-lg-4 text-center">
-                <a href="{{route('advices')}}"><img src="{{ asset('images/StopFraudFinger0_600-300x300.png') }}" alt=""></a>
+                <a href="{{(new App\Services\RouteBuilder)->route('advices')}}"><img src="{{ asset('images/StopFraudFinger0_600-300x300.png') }}" alt=""></a>
                 <h3>{{__('messages.main.button1_header')}}</h3>
                 <p>
                     {{__('messages.main.button1_text')}}
@@ -23,9 +23,9 @@
                 <p>
                     <strong>{{__('messages.main.button1_description')}}</strong>
                 </p>
-                <a class="btn btn-danger btn-lg" href="{{route('advices')}}">{{__('messages.main.button1')}}</a></div>
+                <a class="btn btn-danger btn-lg" href="{{(new App\Services\RouteBuilder)->route('advices')}}">{{__('messages.main.button1')}}</a></div>
             <div class="col-lg-4 text-center">
-                <a href="{{route('fraud.index')}}"><img src="{{ asset('images/StopFraudFinger1_600-300x300.png') }}"
+                <a href="{{(new App\Services\RouteBuilder)->route('fraud.index')}}"><img src="{{ asset('images/StopFraudFinger1_600-300x300.png') }}"
                                                         alt=""></a>
                 <h3>{{__('messages.main.button2_header')}}</h3>
                 <p>
@@ -35,10 +35,10 @@
                 <p>
                     <strong>{{__('messages.main.button2_description')}}</strong>
                 </p>
-                <a class="btn btn-danger btn-lg" href="{{route('fraud.index')}}">{{__('messages.main.button2')}}</a>
+                <a class="btn btn-danger btn-lg" href="{{(new App\Services\RouteBuilder)->route('fraud.index')}}">{{__('messages.main.button2')}}</a>
             </div>
             <div class="col-lg-4 text-center">
-                <a href="{{route('fraud.create')}}"><img src="{{ asset('images/StopFraudFinger3_600-300x300.png') }}"
+                <a href="{{(new App\Services\RouteBuilder)->route('fraud.create')}}"><img src="{{ asset('images/StopFraudFinger3_600-300x300.png') }}"
                                                          alt=""></a>
                 <h3>{{__('messages.main.button3_header')}}</h3>
                 <p>
@@ -47,7 +47,7 @@
                 <p>
                     <strong>{{__('messages.main.button3_description')}}</strong>
                 </p>
-                <a class="btn btn-danger btn-lg" href="{{route('fraud.create')}}">{{__('messages.main.button3')}}</a>
+                <a class="btn btn-danger btn-lg" href="{{(new App\Services\RouteBuilder)->route('fraud.create')}}">{{__('messages.main.button3')}}</a>
             </div>
         </div>
     </div>

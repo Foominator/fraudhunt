@@ -6,6 +6,7 @@
     <div class="container pt-4">
         <search-fraud
             :frauds_count="{{$fraudsCount}}"
+            :locale="{{json_encode(app()->getLocale())}}"
             :auth_check="{{json_encode(auth()->check())}}"
             :routes="{{json_encode($routes)}}"
             :translations="{{json_encode(\Illuminate\Support\Facades\Lang::get('frauds'))}}">

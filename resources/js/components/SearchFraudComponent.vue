@@ -32,7 +32,7 @@
         </div>
 
         <p>
-            <a class="btn btn-success" :href="this.routes['fraud.create']">{{translations['add_fraud_button']}}</a>
+            <a class="btn btn-success" :href="this.generateRoute('fraud.create')">{{translations['add_fraud_button']}}</a>
         </p>
 
         <div v-if="showResult">
@@ -174,7 +174,7 @@
 <script>
     export default {
         name: "SearchFraudComponent",
-        props: ["frauds_count", "routes", "auth_check", "translations"],
+        props: ["frauds_count", "routes", "locale", "auth_check", "translations"],
         data() {
             return {
                 errors: [],
@@ -204,6 +204,9 @@
             }
         },
         methods: {
+            generateRoute(name) { // with locale
+                return "/" + this.routes[this.locale + '.' + name];
+            },
             typePhone(event) {
                 let maskedPhone = event.target.value;
                 this.searchPhone = maskedPhone.replace('+38', '').replace(/\D/g, '');
@@ -227,7 +230,7 @@
                 this.comments = [];
                 this.firstComment = [];
                 this.currentPage = 1;
-                window.axios.get("/" + this.routes['fraud.search'], {params: {phone: this.searchPhone}}).then(({data}) => {
+                window.axios.get(this.generateRoute('fraud.search'), {params: {phone: this.searchPhone}}).then(({data}) => {
                     this.showResult = true;
                     this.firstComment = data.first_comment;
                     this.comments = data.comments.data;
@@ -248,7 +251,7 @@
             loadPage() {
                 if (this.currentPage < this.maxPage) {
                     this.currentPage++;
-                    window.axios.get("/" + this.routes['fraud.search'], {
+                    window.axios.get(this.generateRoute('fraud.search'), {
                         params: {
                             phone: this.searchPhone,
                             page: this.currentPage
@@ -334,7 +337,7 @@
                     status: status,
                 };
 
-                window.axios.post("/" + this.routes['fraud.comment'], params).then(({data}) => {
+                window.axios.post(this.generateRoute('fraud.comment'), params).then(({data}) => {
                     this.showMessages(data);
                     this.commentText = '';
                     this.fraudCards = [];

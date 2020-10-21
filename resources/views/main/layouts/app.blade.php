@@ -18,15 +18,15 @@
 <div id="app">
     <div class="wrapper">
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-            <a class="pl-5 navbar-brand" href="{{route('main')}}"><img
+            <a class="pl-5 navbar-brand" href="{{(new App\Services\RouteBuilder)->route('main')}}"><img
                     src="{{asset('images/FraudHunt_Logo_160x55_5.png')}}"
                     width="25" alt=""></a>
-            <a class="navbar-brand" href="{{route('main')}}">FRAUDHUNT</a>
+            <a class="navbar-brand" href="{{(new App\Services\RouteBuilder)->route('main')}}">FRAUDHUNT</a>
 
             @if (auth()->check() && auth()->user()->isAdmin())
                 <ul class="navbar-nav ml-auto">
                     <li class="nav-item pl-4">
-                        <a class="nav-link" href="{{route('home')}}">AdminPanel</a>
+                        <a class="nav-link" href="{{(new App\Services\RouteBuilder)->route('home')}}">AdminPanel</a>
                     </li>
                 </ul>
             @endif
@@ -54,16 +54,16 @@
             <div class="navbar-collapse collapse w-100 order-3 dual-collapse2 pr-5">
                 <ul class="navbar-nav ml-auto">
                     <li class="nav-item pl-4 @if('rules' === $currentRouteName) active @endif">
-                        <a class="nav-link" href="{{route('rules')}}">{{__('menu.rules')}}</a> <!-- rules -->
+                        <a class="nav-link" href="{{(new App\Services\RouteBuilder)->route('rules')}}">{{__('menu.rules')}}</a> <!-- rules -->
                     </li>
                     <li class="nav-item pl-4 @if('fraud.index' === $currentRouteName) active @endif">
-                        <a class="nav-link" href="{{route('fraud.index')}}">{{__('menu.frauds')}}</a> <!-- frauds -->
+                        <a class="nav-link" href="{{(new App\Services\RouteBuilder)->route('fraud.index')}}">{{__('menu.frauds')}}</a> <!-- frauds -->
                     </li>
                     <li class="nav-item pl-4 @if('fraud.create' === $currentRouteName) active @endif">
-                        <a class="nav-link" href="{{route('fraud.create')}}">{{__('menu.add_fraud')}}</a> <!-- add_fraud -->
+                        <a class="nav-link" href="{{(new App\Services\RouteBuilder)->route('fraud.create')}}">{{__('menu.add_fraud')}}</a> <!-- add_fraud -->
                     </li>
                     <li class="nav-item pl-4 @if('advices' === $currentRouteName) active @endif">
-                        <a class="nav-link" href="{{route('advices')}}">{{__('menu.advices')}}</a> <!-- advices -->
+                        <a class="nav-link" href="{{(new App\Services\RouteBuilder)->route('advices')}}">{{__('menu.advices')}}</a> <!-- advices -->
                     </li>
 
                     @auth
@@ -99,7 +99,7 @@
         <div class="text-center pb-1 pt-2">
             <p class="text-secondary">
                 Размещая или используя информацию в базе данных "FraudHunt" вы подтверждаете своё согласие с <a
-                    href="{{route('rules')}}">Правилами использования сервиса</a>. Все права защищены. Любое
+                    href="{{(new App\Services\RouteBuilder)->route('rules')}}">Правилами использования сервиса</a>. Все права защищены. Любое
                 копирование,
                 публикация,
                 перепечатка материалов сайта разрешается при условии наличия прямой индексируемой гиперссылки на

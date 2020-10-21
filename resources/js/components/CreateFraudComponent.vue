@@ -27,7 +27,7 @@
                                 <div class="form-group mb-2 mt-2">
                                     <div class="text-secondary pointer pt-2" @click="addAdditionalPhone()"
                                          v-if="additionalPhonesCount < 2">
-                                         {{translations['add_phone_label']}} <i class="fa fa-plus"></i>
+                                        {{translations['add_phone_label']}} <i class="fa fa-plus"></i>
                                     </div>
                                 </div>
                             </div>
@@ -109,7 +109,7 @@
 <script>
     export default {
         name: "CreateFraudComponent",
-        props: ["routes", "translations"],
+        props: ["routes", "translations", "locale"],
         data() {
             return {
                 messages: [],
@@ -168,7 +168,7 @@
                     phones: phones,
                     cards: cards,
                 };
-                window.axios.post('/' + this.routes['fraud.store'], params).then(({data}) => {
+                window.axios.post('/' + this.routes[this.locale + '.fraud.store'], params).then(({data}) => {
                     this.showMessages(data);
                     this.fraudComment = '';
                     this.fraudPhone = '';
