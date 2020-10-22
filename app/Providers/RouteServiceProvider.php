@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Macros\UriTranslationMacro;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 use Illuminate\Http\Request;
@@ -37,6 +38,8 @@ class RouteServiceProvider extends ServiceProvider
     {
         $this->configureRateLimiting();
 
+        (new UriTranslationMacro)->register();
+
         $this->routes(function () {
             Route::prefix('api')
                 ->middleware('api')
@@ -45,20 +48,14 @@ class RouteServiceProvider extends ServiceProvider
                 ->group(base_path('routes/api.php'));
 
             foreach (config('app.prefixes_locales') as $locale => $prefix) {
+                app()->setLocale($locale);
                 Route::middleware(['localizable'])
                     ->namespace($this->namespace . "\\Localizable")
                     ->prefix($prefix)
                     ->name("$locale.")
-                    ->group(base_path('routes/localizable/common.php'));
-
-                if (file_exists(base_path("routes/localizable/$locale.php"))) {
-                    Route::middleware(['localizable'])
-                        ->namespace($this->namespace . "\\Localizable")
-                        ->prefix($prefix)
-                        ->name("$locale.")
-                        ->group(base_path("routes/localizable/$locale.php"));
-                }
+                    ->group(base_path('routes/localizable.php'));
             }
+            app()->setLocale(config('default_locale'));
 
             Route::middleware('web')
                 ->namespace($this->namespace)

@@ -1,9 +1,13 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Lang;
 
 Route::get('/', [App\Http\Controllers\Frontend\MainController::class, 'main'])->name('main');
 Route::get('/rules', [App\Http\Controllers\Frontend\MainController::class, 'rules'])->name('rules');
+Route::get('/advices', [App\Http\Controllers\Frontend\MainController::class, 'advices'])->name('advices');
+// To translate route path use locale
+//Route::get(Lang::uri('/advices'), [App\Http\Controllers\Frontend\MainController::class, 'advices'])->name('advices');
 
 Route::get('/frauds', [App\Http\Controllers\Frontend\FraudController::class, 'index'])->name('fraud.index');
 Route::get('/frauds/search', [App\Http\Controllers\Frontend\FraudController::class, 'search'])->name('fraud.search');
