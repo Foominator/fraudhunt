@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Frontend;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Lang;
 
 class CreateCommentRequest extends FormRequest
 {
@@ -41,9 +42,9 @@ class CreateCommentRequest extends FormRequest
     public function messages()
     {
         return [
-            'comment.required' => 'Поле «Описание» обязательное',
-            'cards.*.min' => 'Некорректная длинна банковской карты',
-            'cards.*.max' => 'Некорректная длинна банковской карты',
+            'comment.required' => Lang::get('validation.comment.required'),
+            'cards.*.min' => Lang::get('validation.cards.*.min'),
+            'cards.*.max' => Lang::get('validation.cards.*.max'),
         ];
     }
 }

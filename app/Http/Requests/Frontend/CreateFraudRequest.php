@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Frontend;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Lang;
 
 class CreateFraudRequest extends FormRequest
 {
@@ -41,12 +42,11 @@ class CreateFraudRequest extends FormRequest
     public function messages()
     {
         return [
-            'digits' => 'Некорректный телефон',
-            'phones.*.unique' => 'Мошенник с таким номером уже был создан',
-
-            'cards.*.min' => 'Некорректная длинна банковской карты',
-            'cards.*.max' => 'Некорректная длинна банковской карты',
-            'cards.*.unique' => 'Банковская карта с таким номером уже была добавлена',
+            'digits' => Lang::get('validation.digits'),
+            'phones.*.unique' => Lang::get('validation.phones.*.unique'),
+            'cards.*.min' => Lang::get('validation.cards.*.min'),
+            'cards.*.max' => Lang::get('validation.cards.*.max'),
+            'cards.*.unique' => Lang::get('validation.cards.*.unique'),
         ];
     }
 }
