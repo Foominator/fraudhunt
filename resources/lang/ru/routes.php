@@ -1,0 +1,5 @@
+<?php
+
+return [
+    'advices' => 'советы',
+];
