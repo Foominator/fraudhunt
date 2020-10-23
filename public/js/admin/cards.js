@@ -1,14 +1,14 @@
 jQuery(document).ready(function () {
-    let table = $('#comments-table').DataTable({
-        "order": [[6, "desc"]],
+    let table = $('#cards-table').DataTable({
+        "order": [[$('th.created_at').index(), "desc"]],
         "pageLength": 15,
         "lengthChange": false,
         'sDom': 'lrtip'
     });
-    $('#comments-table').show();
+    $('#cards-table').show();
     $('#loader').hide();
 
-    $('#comments-table-search').on('input', function () {
+    $('#cards-table-search').on('input', function () {
         table.search(this.value).draw();
     });
 });

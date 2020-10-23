@@ -1,5 +1,6 @@
 @section('css')
     <link href="{{asset('datatable/datatables.min.css')}}" rel="stylesheet">
+    <link href="{{asset('css/loader.css')}}" rel="stylesheet">
 @endsection
 
 @push('scripts')
@@ -8,16 +9,18 @@
 @endpush
 
 <div class="table-responsive">
-    <table class="table text-center" id="comments-table">
+    @include('layouts.loader')
+
+    <table class="table text-center" id="comments-table" style="display: none">
         <thead>
         <tr>
-            <th style="text-align: left">Описание</th>
-            <th>Мошенник</th>
-            <th>Тел. Мошенника</th>
-            <th>Карты Мошенника</th>
-            <th>Автор</th>
-            <th>Дата создания</th>
-            <th>Действия</th>
+            <th style="text-align: left" class="description">Описание</th>
+            <th class="status">Мошенник</th>
+            <th class="phone">Тел. Мошенника</th>
+            <th class="cards">Карты Мошенника</th>
+            <th class="author">Автор</th>
+            <th class="created_at">Дата создания</th>
+            <th class="actions">Действия</th>
         </tr>
         </thead>
         <tbody>
@@ -51,7 +54,7 @@
                 </td>
 
                 <td>{{ $comment->author->name }}</td>
-                <td>{{ $comment->created_at->format('d.m.Y H:i') }}</td>
+                <td data-order="{{$comment->created_at->format('Y-m-d H:i:s')}}">{{ $comment->created_at->format('d.m.Y H:i') }}</td>
 
                 <td>
                     {!! Form::open(['route' => ['comments.destroy', $comment->id], 'method' => 'delete']) !!}

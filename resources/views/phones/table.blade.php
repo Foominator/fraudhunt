@@ -1,11 +1,22 @@
+@section('css')
+    <link href="{{asset('datatable/datatables.min.css')}}" rel="stylesheet">
+    <link href="{{asset('css/loader.css')}}" rel="stylesheet">
+@endsection
+
+@push('scripts')
+    <script src="{{asset('js/admin/phones.js')}}"></script>
+    <script src="{{asset('datatable/datatables.min.js')}}"></script>
+@endpush
+
 <div class="table-responsive">
     <table class="table" id="phones-table">
         <thead>
         <tr>
-            <th>Номер</th>
-            <th>Автор</th>
-            <th>Дата добавления</th>
-            <th colspan="3">Действия</th>
+            <th class="number">Номер</th>
+            <th class="author">Автор</th>
+            <th class="comment">Комментарий автора</th>
+            <th class="created_at">Дата добавления</th>
+            <th class="actions">Действия</th>
         </tr>
         </thead>
         <tbody>
@@ -15,9 +26,10 @@
                 <td>
                     <a href="{{ route('users.show', [$phone->author->id]) }}" class='btn btn-default btn-xs'><i
                             class="glyphicon glyphicon-eye-open"></i></a>
-                    {{ $phone->author->name }}
+                    {{ $phone->author->email }}
                 </td>
-                <td>{{ $phone->created_at->format('d.m.Y H:i') }}</td>
+                <td style="width: 40%">{{ $phone->comments->first()->description }}</td>
+                <td data-order="{{$phone->created_at->format('Y-m-d H:i:s')}}">{{ $phone->created_at->format('d.m.Y H:i') }}</td>
                 <td>
                     {!! Form::open(['route' => ['phones.destroy', $phone->id], 'method' => 'delete']) !!}
                     <div class='btn-group'>

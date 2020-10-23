@@ -3,9 +3,9 @@
 @section('content')
     <section class="content-header">
         <h1 class="pull-left">
-            Users
+            Пользователи
             <small>
-            <a href="{{ route('users.create') }}"><i class="fa fa-plus"></i> Add New</a>
+            <a href="{{ route('users.create') }}"><i class="fa fa-plus"></i> Создать</a>
             </small>
         </h1>
         <h1 class="pull-right">

@@ -2,10 +2,11 @@
 
 @section('content')
     <section class="content-header">
-        <h1 class="pull-left">Cards</h1>
+        <h1 class="pull-left">Карты</h1>
         <h1 class="pull-right">
-            <a class="btn btn-primary pull-right" style="margin-top: -10px;margin-bottom: 5px"
-               href="{{ route('cards.create') }}">Add New</a>
+            <div class="input-group">
+                <input type="text" name="q" id="cards-table-search" class="form-control" placeholder="Поиск...">
+            </div>
         </h1>
     </section>
     <div class="content">

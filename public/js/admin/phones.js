@@ -1,14 +1,14 @@
 jQuery(document).ready(function () {
-    let table = $('#comments-table').DataTable({
-        "order": [[6, "desc"]],
+    let table = $('#phones-table').DataTable({
+        "order": [[$('th.created_at').index(), "desc"]],
         "pageLength": 15,
         "lengthChange": false,
         'sDom': 'lrtip'
     });
-    $('#comments-table').show();
+    $('#phones-table').show();
     $('#loader').hide();
 
-    $('#comments-table-search').on('input', function () {
+    $('#phones-table-search').on('input', function () {
         table.search(this.value).draw();
     });
 });

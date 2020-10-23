@@ -30,8 +30,9 @@ class PhoneController extends AppBaseController
      */
     public function index(Request $request)
     {
-        $phones = Phone::with('author')->latest()->get();
-
+        $phones = Phone::with('author')->with('comments', function ($query) {
+            $query->withTrashed()->oldest();
+        })->latest()->get();
         return view('phones.index')
             ->with('phones', $phones);
     }

@@ -9,18 +9,7 @@
 @endpush
 
 <div class="table-responsive">
-    <div id="loader" class="text-center">
-        <div class="lds-roller">
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-        </div>
-    </div>
+    @include('layouts.loader')
 
     <table class="table" id="users-table" style="display: none">
         <thead>
