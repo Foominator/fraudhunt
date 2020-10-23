@@ -98,4 +98,16 @@ class User extends Authenticatable
         $this->roles()->attach($role);
         return true;
     }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function comments()
+    {
+        return $this->hasMany(
+            Comment::class,
+            'author_id', // Foreign key on comments table...
+            'id', // Foreign key on cards table...
+        );
+    }
 }

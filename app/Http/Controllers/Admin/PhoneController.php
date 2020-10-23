@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Requests\CreatePhoneRequest;
 use App\Http\Requests\UpdatePhoneRequest;
+use App\Models\Phone;
 use App\Repositories\PhoneRepository;
 use App\Http\Controllers\AppBaseController;
 use Illuminate\Http\Request;
@@ -29,8 +30,8 @@ class PhoneController extends AppBaseController
      */
     public function index(Request $request)
     {
-        $phones = $this->phoneRepository->all();
-        $phones->load('author');
+        $phones = Phone::with('author')->latest()->get();
+
         return view('phones.index')
             ->with('phones', $phones);
     }

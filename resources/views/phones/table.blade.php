@@ -2,22 +2,22 @@
     <table class="table" id="phones-table">
         <thead>
         <tr>
-            <th>Number</th>
-            <th>Name</th>
-            <th>Author</th>
-            <th colspan="3">Action</th>
+            <th>Номер</th>
+            <th>Автор</th>
+            <th>Дата добавления</th>
+            <th colspan="3">Действия</th>
         </tr>
         </thead>
         <tbody>
         @foreach($phones as $phone)
             <tr>
                 <td>{{ $phone->number }}</td>
-                <td>{{ $phone->name }}</td>
                 <td>
-                    {{ $phone->author->name }}
                     <a href="{{ route('users.show', [$phone->author->id]) }}" class='btn btn-default btn-xs'><i
                             class="glyphicon glyphicon-eye-open"></i></a>
+                    {{ $phone->author->name }}
                 </td>
+                <td>{{ $phone->created_at->format('d.m.Y H:i') }}</td>
                 <td>
                     {!! Form::open(['route' => ['phones.destroy', $phone->id], 'method' => 'delete']) !!}
                     <div class='btn-group'>

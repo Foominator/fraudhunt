@@ -2,10 +2,10 @@
     <table class="table" id="users-table">
         <thead>
         <tr>
-            <th>Name</th>
+            <th>Логин</th>
             <th>Email</th>
-            <th>Roles</th>
-            <th>Password</th>
+            <th>Комментарии</th>
+            <th>Дата регистрации</th>
             <th colspan="3">Action</th>
         </tr>
         </thead>
@@ -14,8 +14,8 @@
             <tr>
                 <td>{{ $user->name }}</td>
                 <td>{{ $user->email }}</td>
-                <td>{{ $user->roles->pluck('slug')->implode(', ') }}</td>
-                <td>{{ $user->password }}</td>
+                <td>{{ $user->comments->count() }}</td>
+                <td>{{ $user->created_at->format('d.m.Y H:i') }}</td>
                 <td>
                     {!! Form::open(['route' => ['users.destroy', $user->id], 'method' => 'delete']) !!}
                     <div class='btn-group'>

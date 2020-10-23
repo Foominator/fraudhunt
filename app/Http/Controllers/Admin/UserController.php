@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Requests\CreateUserRequest;
 use App\Http\Requests\UpdateUserRequest;
+use App\Models\User;
 use App\Repositories\UserRepository;
 use App\Http\Controllers\AppBaseController;
 use Illuminate\Http\Request;
@@ -30,8 +31,7 @@ class UserController extends AppBaseController
      */
     public function index(Request $request)
     {
-        $users = $this->userRepository->all();
-        $users->load('roles');
+        $users = User::with('comments')->latest()->get();
 
         return view('users.index')
             ->with('users', $users);
