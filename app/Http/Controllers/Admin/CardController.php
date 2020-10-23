@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Requests\CreateCardRequest;
 use App\Http\Requests\UpdateCardRequest;
+use App\Models\Card;
 use App\Repositories\CardRepository;
 use App\Http\Controllers\AppBaseController;
 use Illuminate\Http\Request;
@@ -29,8 +30,9 @@ class CardController extends AppBaseController
      */
     public function index(Request $request)
     {
-        $cards = $this->cardRepository->all();
-        $cards->load('comment');
+        $cards = Card::with(['comment' => function ($q) {
+            $q->withTrashed();
+        }])->get();
         return view('cards.index')
             ->with('cards', $cards);
     }

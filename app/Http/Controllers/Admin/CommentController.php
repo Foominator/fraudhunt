@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Requests\CreateCommentRequest;
 use App\Http\Requests\UpdateCommentRequest;
+use App\Models\Comment;
 use App\Repositories\CommentRepository;
 use App\Http\Controllers\AppBaseController;
 use Illuminate\Http\Request;
@@ -29,8 +30,7 @@ class CommentController extends AppBaseController
      */
     public function index(Request $request)
     {
-        $comments = $this->commentRepository->all();
-        $comments->load(['author', 'phone']);
+        $comments = Comment::with(['author', 'phone','cards'])->latest()->get();
         return view('comments.index')
             ->with('comments', $comments);
     }
