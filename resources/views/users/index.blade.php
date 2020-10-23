@@ -2,12 +2,19 @@
 
 @section('content')
     <section class="content-header">
-        <h1 class="pull-left">Users</h1>
+        <h1 class="pull-left">
+            Users
+            <small>
+            <a href="{{ route('users.create') }}"><i class="fa fa-plus"></i> Add New</a>
+            </small>
+        </h1>
         <h1 class="pull-right">
-            <a class="btn btn-primary pull-right" style="margin-top: -10px;margin-bottom: 5px"
-               href="{{ route('users.create') }}">Add New</a>
+            <div class="input-group">
+                <input type="text" name="q" id="users-table-search" class="form-control" placeholder="Поиск...">
+            </div>
         </h1>
     </section>
+    <br>
     <div class="content">
         <div class="clearfix"></div>
 
@@ -15,7 +22,7 @@
 
         <div class="clearfix"></div>
         <div class="box box-primary">
-            <div class="box-body">
+            <div class="box-body" style="padding-top: 0">
                 @include('users.table')
             </div>
         </div>

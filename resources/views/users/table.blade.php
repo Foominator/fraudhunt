@@ -1,12 +1,35 @@
+@section('css')
+    <link href="{{asset('datatable/datatables.min.css')}}" rel="stylesheet">
+    <link href="{{asset('css/loader.css')}}" rel="stylesheet">
+@endsection
+
+@push('scripts')
+    <script src="{{asset('js/admin/users.js')}}"></script>
+    <script src="{{asset('datatable/datatables.min.js')}}"></script>
+@endpush
+
 <div class="table-responsive">
-    <table class="table" id="users-table">
+    <div id="loader" class="text-center">
+        <div class="lds-roller">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+
+    <table class="table" id="users-table" style="display: none">
         <thead>
         <tr>
-            <th>Логин</th>
-            <th>Email</th>
-            <th>Комментарии</th>
-            <th>Дата регистрации</th>
-            <th colspan="3">Action</th>
+            <th class="name">Логин</th>
+            <th class="email">Email</th>
+            <th class="comments">Комментарии</th>
+            <th class="created_at">Дата регистрации</th>
+            <th class="action">Action</th>
         </tr>
         </thead>
         <tbody>
@@ -15,7 +38,7 @@
                 <td>{{ $user->name }}</td>
                 <td>{{ $user->email }}</td>
                 <td>{{ $user->comments->count() }}</td>
-                <td>{{ $user->created_at->format('d.m.Y H:i') }}</td>
+                <td data-order="{{$user->created_at->format('Y-m-d H:i:s')}}">{{ $user->created_at->format('d.m.Y H:i') }}</td>
                 <td>
                     {!! Form::open(['route' => ['users.destroy', $user->id], 'method' => 'delete']) !!}
                     <div class='btn-group'>
