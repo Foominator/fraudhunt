@@ -55,7 +55,7 @@ class RouteServiceProvider extends ServiceProvider
                     ->name("$locale.")
                     ->group(base_path('routes/localizable.php'));
             }
-            app()->setLocale(config('default_locale'));
+            app()->setLocale(config('app.default_locale'));
 
             Route::middleware('web')
                 ->namespace($this->namespace)
